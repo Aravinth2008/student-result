@@ -1787,7 +1787,7 @@ form.addEventListener(
     try {
       
 
-      const response = await fetch(API_URL, {
+const response = await fetch(API_URL, {
   method: "POST",
   headers: {
     "Content-Type": "text/plain;charset=utf-8"
@@ -1797,7 +1797,6 @@ form.addEventListener(
     dob: dob
   })
 });
-
 const data = await response.json();
 
 if (!data.success) {
