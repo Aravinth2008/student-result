@@ -1,556 +1,865 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Student Result Portal</title>
-
-  <meta
-    name="description"
-    content="Student Result Portal - Secure Academic Result Verification"
-  >
-
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family:
-        Inter,
-        ui-sans-serif,
-        system-ui,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        sans-serif;
-
-      min-height: 100vh;
-
-      background:
-        radial-gradient(
-          circle at 10% 10%,
-          #dbeafe 0,
-          transparent 32%
-        ),
-        radial-gradient(
-          circle at 90% 90%,
-          #ede9fe 0,
-          transparent 32%
-        ),
-        #f8fafc;
-
-      color: #0f172a;
-    }
-
-    button,
-    input {
-      font: inherit;
-    }
-
-    .page {
-      min-height: 100vh;
-      padding: 35px 16px;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 1050px;
-      margin: auto;
-    }
-
-    /* =========================
-       BRAND
-       ========================= */
-
-    .brand {
-      text-align: center;
-      margin-bottom: 25px;
-    }
-
-    .logo {
-      width: 62px;
-      height: 62px;
-      margin: auto;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      border-radius: 18px;
-
-      background: #0f172a;
-      color: white;
-
-      font-size: 26px;
-      font-weight: 800;
-
-      box-shadow:
-        0 18px 40px rgba(15, 23, 42, 0.18);
-    }
-
-    .brand h1 {
-      margin-top: 15px;
-      font-size: 30px;
-      letter-spacing: -1px;
-    }
-
-    .brand p {
-      margin-top: 7px;
-      color: #64748b;
-      font-size: 14px;
-    }
-
-    /* =========================
-       LOGIN CARD
-       ========================= */
-
-    .card {
-      width: 100%;
-      max-width: 500px;
-      margin: auto;
-
-      padding: 32px;
-
-      background: rgba(255, 255, 255, 0.96);
-
-      border: 1px solid #e2e8f0;
-      border-radius: 24px;
-
-      box-shadow:
-        0 25px 70px rgba(15, 23, 42, 0.10);
-    }
-
-    .card h2 {
-      font-size: 23px;
-      margin-bottom: 7px;
-    }
-
-    .subtitle {
-      color: #64748b;
-      font-size: 14px;
-      line-height: 1.55;
-      margin-bottom: 25px;
-    }
-
-    .field {
-      margin-bottom: 18px;
-    }
-
-    .field label {
-      display: block;
-      margin-bottom: 8px;
-
-      font-size: 13px;
-      font-weight: 700;
-
-      color: #334155;
-    }
-
-    .field input {
-      width: 100%;
-      height: 52px;
-
-      padding: 0 15px;
-
-      border: 1px solid #cbd5e1;
-      border-radius: 13px;
-
-      outline: none;
-
-      background: white;
-      color: #0f172a;
-
-      transition: 0.2s;
-    }
-
-    .field input:focus {
-      border-color: #6366f1;
-
-      box-shadow:
-        0 0 0 4px rgba(99, 102, 241, 0.10);
-    }
-
-    .btn {
-      width: 100%;
-      height: 53px;
-
-      border: none;
-      border-radius: 13px;
-
-      background: #0f172a;
-      color: white;
-
-      font-weight: 750;
-
-      cursor: pointer;
-
-      transition: 0.2s;
-    }
-
-    .btn:hover {
-      background: #1e293b;
-      transform: translateY(-1px);
-    }
-
-    .btn:disabled {
-      opacity: 0.65;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    /* =========================
-       LOADING
-       ========================= */
-
-    .loading {
-      display: none;
-
-      align-items: center;
-      justify-content: center;
-
-      gap: 9px;
-
-      margin-top: 15px;
-
-      color: #64748b;
-      font-size: 13px;
-    }
-
-    .spinner {
-      width: 18px;
-      height: 18px;
-
-      border-radius: 50%;
-
-      border: 2px solid #cbd5e1;
-      border-top-color: #0f172a;
-
-      animation: spin 0.8s linear infinite;
-    }
-
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
-    }
-
-    /* =========================
-       MESSAGE
-       ========================= */
-
-    .message {
-      display: none;
-
-      margin-top: 16px;
-
-      padding: 13px 14px;
-
-      border-radius: 12px;
-
-      font-size: 13px;
-      line-height: 1.5;
-    }
-
-    .message.error {
-      display: block;
-
-      background: #fef2f2;
-      color: #b91c1c;
-
-      border: 1px solid #fecaca;
-    }
-
-    .message.success {
-      display: block;
-
-      background: #f0fdf4;
-      color: #15803d;
-
-      border: 1px solid #bbf7d0;
-    }
-
-    /* =========================
-       RESULT
-       ========================= */
-
-    #resultSection {
-      display: none;
-    }
-
-    .result-header {
-      display: flex;
-
-      justify-content: space-between;
-      align-items: center;
-
-      gap: 15px;
-
-      margin-bottom: 20px;
-    }
-
-    .student-name {
-      font-size: 27px;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-    }
-
-    .student-meta {
-      margin-top: 5px;
-
-      color: #64748b;
-
-      font-size: 13px;
-    }
-
-    .logout {
-      border: 1px solid #cbd5e1;
-
-      background: white;
-
-      border-radius: 11px;
-
-      padding: 10px 15px;
-
-      cursor: pointer;
-
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    /* =========================
-       CGPA HERO
-       ========================= */
-
-    .hero {
-      background: #0f172a;
-      color: white;
-
-      border-radius: 23px;
-
-      padding: 28px;
-
-      margin-bottom: 18px;
-    }
-
-    .hero-label {
-      font-size: 13px;
-      opacity: 0.7;
-    }
-
-    .cgpa {
-      margin-top: 5px;
-
-      font-size: 54px;
-      font-weight: 850;
-
-      letter-spacing: -2px;
-    }
-
-    .hero-small {
-      margin-top: 5px;
-
-      font-size: 13px;
-      opacity: 0.75;
-    }
-
-    /* =========================
-       STATS
-       ========================= */
-
-    .stats {
-      display: grid;
-
-      grid-template-columns:
-        repeat(3, 1fr);
-
-      gap: 13px;
-
-      margin-bottom: 18px;
-    }
-
-    .stat {
-      background: white;
-
-      border: 1px solid #e2e8f0;
-
-      border-radius: 17px;
-
-      padding: 18px;
-    }
-
-    .stat-label {
-      color: #64748b;
-      font-size: 12px;
-    }
-
-    .stat-value {
-      margin-top: 6px;
-
-      font-size: 20px;
-      font-weight: 800;
-    }
-
-    /* =========================
-       SECTION
-       ========================= */
-
-    .section {
-      background: white;
-
-      border: 1px solid #e2e8f0;
-
-      border-radius: 20px;
-
-      padding: 22px;
-
-      margin-bottom: 17px;
-    }
-
-    .section h3 {
-      font-size: 17px;
-      margin-bottom: 16px;
-    }
-
-    /* =========================
-       SUBJECT
-       ========================= */
-
-    .subject {
-      display: flex;
-
-      justify-content: space-between;
-      align-items: center;
-
-      gap: 12px;
-
-      padding: 14px 0;
-
-      border-bottom:
-        1px solid #f1f5f9;
-    }
-
-    .subject:last-child {
-      border-bottom: none;
-    }
-
-    .subject-name {
-      font-size: 14px;
-      font-weight: 650;
-    }
-
-    .subject-mark {
-      font-size: 15px;
-      font-weight: 800;
-    }
-
-    /* =========================
-       RECOMMENDATION
-       ========================= */
-
-    .recommendation {
-      padding: 13px 14px;
-
-      background: #f8fafc;
-
-      border-radius: 12px;
-
-      margin-bottom: 9px;
-
-      color: #475569;
-
-      font-size: 13px;
-
-      line-height: 1.5;
-    }
-
-    .footer {
-      text-align: center;
-
-      margin-top: 20px;
-
-      color: #94a3b8;
-
-      font-size: 11px;
-    }
-
-    /* =========================
-       MOBILE
-       ========================= */
-
-    @media (max-width: 650px) {
-
-      .page {
-        padding: 25px 13px;
-      }
-
-      .card {
-        padding: 23px;
-        border-radius: 20px;
-      }
-
-      .stats {
-        grid-template-columns: 1fr;
-      }
-
-      .result-header {
-        align-items: flex-start;
-      }
-
-      .student-name {
-        font-size: 21px;
-      }
-
-      .cgpa {
-        font-size: 45px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>GradeCentral — Student Performance</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+:root{
+  --bg:#f8f8fc;
+  --card:#ffffff;
+  --text:#111111;
+  --muted:#777780;
+  --line:#e8e8ee;
+  --purple:#5146e5;
+  --purple2:#7167f5;
+  --green:#159447;
+  --red:#d94c55;
+  --dark:#090909;
+}
+
+body{
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,
+  BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:
+    radial-gradient(circle at 15% 10%,#e8e6ff 0,transparent 28%),
+    radial-gradient(circle at 90% 90%,#eeeeff 0,transparent 30%),
+    var(--bg);
+  color:var(--text);
+  min-height:100vh;
+}
+
+button,input{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+#app{
+  min-height:100vh;
+}
+
+/* =========================================================
+   PREPARING
+   ========================================================= */
+
+.screen{
+  min-height:100vh;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:25px;
+}
+
+.screen.active{
+  display:flex;
+}
+
+.preparing-card{
+  width:390px;
+  min-height:600px;
+  background:#fff;
+  border:1px solid #ededf2;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:35px;
+  box-shadow:0 25px 70px rgba(0,0,0,.08);
+}
+
+.logo{
+  width:52px;
+  height:52px;
+  border-radius:50%;
+  background:#050505;
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:900;
+  margin-bottom:35px;
+}
+
+.preparing-card h1{
+  font-size:15px;
+  margin-bottom:7px;
+}
+
+.preparing-card h2{
+  font-size:27px;
+  margin-bottom:12px;
+}
+
+.preparing-card p{
+  font-size:12px;
+  color:#777;
+  line-height:1.6;
+  max-width:260px;
+}
+
+.loader{
+  width:28px;
+  height:28px;
+  border-radius:50%;
+  border:4px solid #eeeeee;
+  border-top-color:#111;
+  animation:spin .8s linear infinite;
+  margin:25px 0;
+}
+
+@keyframes spin{
+  to{transform:rotate(360deg)}
+}
+
+.dots{
+  color:#bbb;
+  font-size:12px;
+  letter-spacing:3px;
+}
+
+.dots span{
+  animation:blink 1.2s infinite;
+}
+
+.dots span:nth-child(2){animation-delay:.2s}
+.dots span:nth-child(3){animation-delay:.4s}
+
+@keyframes blink{
+  0%,100%{opacity:.2}
+  50%{opacity:1}
+}
+
+/* =========================================================
+   LOGIN
+   ========================================================= */
+
+.login-screen{
+  padding:20px;
+}
+
+.login-wrap{
+  width:390px;
+}
+
+.brand{
+  text-align:center;
+  margin-bottom:20px;
+}
+
+.brand h1{
+  font-size:18px;
+}
+
+.brand p{
+  color:#888;
+  font-size:11px;
+  margin-top:5px;
+}
+
+.login-card{
+  background:#fff;
+  border:1px solid #e9e9ee;
+  border-radius:8px;
+  padding:25px;
+  box-shadow:0 20px 60px rgba(0,0,0,.07);
+}
+
+.login-card h2{
+  font-size:22px;
+  margin-bottom:6px;
+}
+
+.login-card .sub{
+  color:#777;
+  font-size:11px;
+  line-height:1.5;
+  margin-bottom:22px;
+}
+
+.field{
+  margin-bottom:16px;
+}
+
+.field label{
+  display:block;
+  font-size:9px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+  color:#777;
+  margin-bottom:7px;
+}
+
+.field input{
+  width:100%;
+  height:43px;
+  border:1px solid #dedee5;
+  border-radius:6px;
+  padding:0 12px;
+  outline:none;
+  font-size:12px;
+  background:#fafafa;
+}
+
+.field input:focus{
+  border-color:var(--purple);
+  background:white;
+  box-shadow:0 0 0 3px rgba(81,70,229,.08);
+}
+
+.main-btn{
+  width:100%;
+  height:44px;
+  border:0;
+  border-radius:6px;
+  background:#050505;
+  color:#fff;
+  font-size:11px;
+  font-weight:800;
+}
+
+.main-btn:disabled{
+  opacity:.6;
+}
+
+.small-note{
+  text-align:center;
+  font-size:9px;
+  color:#aaa;
+  margin-top:15px;
+}
+
+.error{
+  margin-top:12px;
+  background:#fff1f1;
+  border:1px solid #ffd1d1;
+  color:#c63838;
+  border-radius:6px;
+  padding:10px;
+  font-size:11px;
+  line-height:1.5;
+  display:none;
+}
+
+.loading-text{
+  display:none;
+  text-align:center;
+  margin-top:12px;
+  color:#777;
+  font-size:10px;
+}
+
+/* =========================================================
+   RESULT APP
+   ========================================================= */
+
+.result-screen{
+  padding:0;
+  align-items:flex-start;
+}
+
+.phone{
+  width:100%;
+  max-width:430px;
+  min-height:100vh;
+  background:#fafafd;
+  position:relative;
+  padding-bottom:80px;
+}
+
+.topbar{
+  height:60px;
+  padding:0 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  background:#fff;
+  border-bottom:1px solid #eeeeef;
+  position:sticky;
+  top:0;
+  z-index:10;
+}
+
+.top-brand{
+  font-weight:900;
+  font-size:14px;
+}
+
+.top-icon{
+  width:28px;
+  height:28px;
+  border:1px solid #ddd;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:11px;
+}
+
+.content{
+  padding:22px 18px;
+}
+
+.greeting{
+  font-size:10px;
+  color:#777;
+  margin-bottom:4px;
+}
+
+.student-title{
+  font-size:24px;
+  font-weight:850;
+  letter-spacing:-.8px;
+}
+
+.student-meta{
+  font-size:10px;
+  color:#888;
+  margin-top:4px;
+}
+
+/* =========================================================
+   CGPA CARD
+   ========================================================= */
+
+.cgpa-card{
+  background:#fff;
+  border:1px solid #ececf1;
+  border-radius:14px;
+  padding:22px 18px;
+  margin-top:20px;
+  text-align:center;
+  box-shadow:0 12px 35px rgba(0,0,0,.04);
+}
+
+.cgpa-title{
+  font-size:11px;
+  font-weight:800;
+  margin-bottom:10px;
+}
+
+.gauge{
+  width:175px;
+  height:100px;
+  margin:auto;
+  position:relative;
+  overflow:hidden;
+}
+
+.gauge svg{
+  width:175px;
+  height:100px;
+}
+
+.gauge-bg{
+  fill:none;
+  stroke:#ededf2;
+  stroke-width:12;
+  stroke-linecap:round;
+}
+
+.gauge-value{
+  fill:none;
+  stroke:var(--purple);
+  stroke-width:12;
+  stroke-linecap:round;
+  stroke-dasharray:245;
+  stroke-dashoffset:245;
+  transition:stroke-dashoffset:1.5s ease;
+}
+
+.cgpa-number{
+  position:absolute;
+  bottom:0;
+  left:0;
+  right:0;
+  font-size:29px;
+  font-weight:900;
+}
+
+.cgpa-label{
+  color:#777;
+  font-size:9px;
+  margin-top:3px;
+}
+
+.trend{
+  display:inline-block;
+  margin-top:12px;
+  background:#f0fff5;
+  color:#148747;
+  border-radius:20px;
+  padding:5px 9px;
+  font-size:9px;
+  font-weight:700;
+}
+
+/* =========================================================
+   STAT CARDS
+   ========================================================= */
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  margin-top:10px;
+}
+
+.stat{
+  background:#fff;
+  border:1px solid #ececf1;
+  border-radius:10px;
+  padding:12px;
+}
+
+.stat-label{
+  font-size:8px;
+  color:#888;
+}
+
+.stat-value{
+  margin-top:5px;
+  font-size:16px;
+  font-weight:850;
+}
+
+/* =========================================================
+   SECTIONS
+   ========================================================= */
+
+.section{
+  margin-top:20px;
+}
+
+.section-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:10px;
+}
+
+.section-title{
+  font-size:14px;
+  font-weight:850;
+}
+
+.section-link{
+  color:var(--purple);
+  font-size:9px;
+  font-weight:700;
+}
+
+.panel{
+  background:#fff;
+  border:1px solid #ececf1;
+  border-radius:13px;
+  overflow:hidden;
+}
+
+/* =========================================================
+   SUBJECTS
+   ========================================================= */
+
+.subject{
+  padding:14px;
+  border-bottom:1px solid #f0f0f3;
+}
+
+.subject:last-child{
+  border-bottom:0;
+}
+
+.subject-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.subject-name{
+  font-size:11px;
+  font-weight:750;
+}
+
+.grade{
+  font-size:11px;
+  font-weight:900;
+}
+
+.subject-bottom{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-top:8px;
+}
+
+.progress{
+  height:5px;
+  flex:1;
+  background:#eeeeF3;
+  border-radius:20px;
+  overflow:hidden;
+}
+
+.progress-bar{
+  height:100%;
+  width:0;
+  background:var(--purple);
+  border-radius:20px;
+  transition:width 1.2s cubic-bezier(.2,.8,.2,1);
+}
+
+.mark{
+  font-size:9px;
+  color:#777;
+  min-width:45px;
+  text-align:right;
+}
+
+/* =========================================================
+   PROGRESS GRAPH
+   ========================================================= */
+
+.graph-card{
+  padding:15px;
+}
+
+.graph{
+  height:160px;
+  position:relative;
+  border-left:1px solid #ddd;
+  border-bottom:1px solid #ddd;
+  margin:10px 5px 20px;
+}
+
+.grid-line{
+  position:absolute;
+  left:0;
+  right:0;
+  border-top:1px dashed #ededf0;
+}
+
+.line-svg{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  overflow:visible;
+}
+
+.chart-line{
+  fill:none;
+  stroke:var(--purple);
+  stroke-width:3;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  stroke-dasharray:500;
+  stroke-dashoffset:500;
+  animation:drawLine 1.8s ease forwards;
+}
+
+@keyframes drawLine{
+  to{stroke-dashoffset:0}
+}
+
+.chart-dot{
+  fill:white;
+  stroke:var(--purple);
+  stroke-width:3;
+}
+
+.graph-labels{
+  display:flex;
+  justify-content:space-between;
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:-18px;
+  font-size:8px;
+  color:#888;
+}
+
+.momentum{
+  background:#f7f6ff;
+  border-radius:7px;
+  padding:9px;
+  font-size:9px;
+  color:#555;
+}
+
+/* =========================================================
+   INSIGHTS
+   ========================================================= */
+
+.insight{
+  padding:13px;
+  border-bottom:1px solid #f0f0f3;
+}
+
+.insight:last-child{
+  border-bottom:0;
+}
+
+.insight-title{
+  font-size:10px;
+  font-weight:850;
+  margin-bottom:4px;
+}
+
+.insight-text{
+  font-size:9px;
+  color:#777;
+  line-height:1.5;
+}
+
+.badge{
+  display:inline-block;
+  padding:3px 6px;
+  border-radius:5px;
+  font-size:8px;
+  font-weight:800;
+  margin-top:6px;
+  background:#f1efff;
+  color:var(--purple);
+}
+
+.badge.green{
+  background:#ecfff2;
+  color:#168847;
+}
+
+.badge.red{
+  background:#fff0f1;
+  color:#c63e49;
+}
+
+/* =========================================================
+   OPPORTUNITY
+   ========================================================= */
+
+.opportunity{
+  padding:15px;
+}
+
+.opportunity h4{
+  font-size:12px;
+  margin-bottom:5px;
+}
+
+.opportunity p{
+  color:#777;
+  font-size:9px;
+  line-height:1.5;
+}
+
+.resources{
+  display:inline-block;
+  margin-top:10px;
+  padding:7px 9px;
+  border:1px solid #ddd;
+  border-radius:6px;
+  font-size:8px;
+  font-weight:800;
+}
+
+/* =========================================================
+   MILESTONE
+   ========================================================= */
+
+.milestone{
+  margin-top:10px;
+  padding:14px;
+  background:#fff;
+  border:1px solid #ececf1;
+  border-radius:12px;
+}
+
+.milestone-top{
+  display:flex;
+  justify-content:space-between;
+  font-size:9px;
+  font-weight:800;
+}
+
+.milestone p{
+  font-size:9px;
+  color:#777;
+  margin:8px 0;
+}
+
+.mini-progress{
+  height:5px;
+  background:#eeeef2;
+  border-radius:20px;
+  overflow:hidden;
+}
+
+.mini-progress span{
+  display:block;
+  height:100%;
+  width:0;
+  background:var(--purple);
+  transition:width 1.4s ease;
+}
+
+/* =========================================================
+   BOTTOM NAV
+   ========================================================= */
+
+.bottom-nav{
+  position:fixed;
+  bottom:0;
+  width:100%;
+  max-width:430px;
+  height:65px;
+  background:rgba(255,255,255,.96);
+  backdrop-filter:blur(15px);
+  border-top:1px solid #e9e9ee;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  z-index:20;
+}
+
+.nav-item{
+  border:0;
+  background:transparent;
+  color:#999;
+  font-size:8px;
+  font-weight:700;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:5px;
+}
+
+.nav-icon{
+  font-size:15px;
+}
+
+.nav-item.active{
+  color:var(--purple);
+}
+
+/* =========================================================
+   TOAST
+   ========================================================= */
+
+.toast{
+  position:fixed;
+  left:50%;
+  bottom:82px;
+  transform:translateX(-50%) translateY(20px);
+  background:#111;
+  color:white;
+  padding:10px 15px;
+  border-radius:8px;
+  font-size:10px;
+  opacity:0;
+  pointer-events:none;
+  transition:.3s;
+  z-index:50;
+}
+
+.toast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
+
+/* =========================================================
+   DESKTOP
+   ========================================================= */
+
+@media(min-width:700px){
+  .phone{
+    box-shadow:0 20px 80px rgba(0,0,0,.10);
+    min-height:100vh;
+  }
+
+  .result-screen{
+    background:
+      radial-gradient(circle at 20% 10%,#e9e8ff,transparent 30%),
+      radial-gradient(circle at 80% 90%,#eeeeff,transparent 30%),
+      #f8f8fc;
+  }
+
+  .bottom-nav{
+    position:fixed;
+    left:50%;
+    transform:translateX(-50%);
+  }
+}
+</style>
 </head>
 
 <body>
 
-<div class="page">
+<div id="app">
 
-  <div class="container">
+  <!-- ======================================================
+       PREPARING SCREEN
+       ====================================================== -->
 
-    <!-- =====================================================
-         LOGIN
-         ===================================================== -->
+  <section id="preparingScreen" class="screen active">
 
-    <div id="loginSection">
+    <div class="preparing-card">
 
-      <div class="brand">
+      <div class="logo">G</div>
 
-        <div class="logo">
-          S
-        </div>
+      <h1>GradeCentral</h1>
 
-        <h1>
-          Student Result Portal
-        </h1>
+      <h2>Preparing your result<br>experience</h2>
 
-        <p>
-          Secure academic result verification
-        </p>
+      <div class="loader"></div>
 
+      <p>
+        Please wait while we securely prepare
+        your academic performance dashboard.
+      </p>
+
+      <div class="dots">
+        CONNECTING <span>•</span>
+        PREPARING <span>•</span>
+        READY <span>•</span>
       </div>
 
+    </div>
 
-      <div class="card">
+  </section>
 
-        <h2>
-          View Your Result
-        </h2>
 
-        <p class="subtitle">
-          Enter your Registration Number and Date
-          of Birth to securely access your academic result.
+  <!-- ======================================================
+       LOGIN SCREEN
+       ====================================================== -->
+
+  <section id="loginScreen" class="screen login-screen">
+
+    <div class="login-wrap">
+
+      <div class="brand">
+        <h1>GradeCentral</h1>
+        <p>Student Performance</p>
+      </div>
+
+      <div class="login-card">
+
+        <h2>Check your result</h2>
+
+        <p class="sub">
+          Enter your college details to securely
+          access your academic result.
         </p>
-
 
         <form id="resultForm">
 
@@ -587,232 +896,403 @@
 
 
           <button
+            class="main-btn"
             id="submitBtn"
-            class="btn"
             type="submit"
           >
-            View My Result
+            View My Result →
           </button>
 
         </form>
 
-
-        <div
-          id="loading"
-          class="loading"
-        >
-
-          <span class="spinner"></span>
-
-          <span>
-            Verifying your details...
-          </span>
-
+        <div id="loadingText" class="loading-text">
+          Verifying your details...
         </div>
 
+        <div id="errorBox" class="error"></div>
 
-        <div
-          id="message"
-          class="message"
-        ></div>
+        <div class="small-note">
+          Your details are used only to verify your result.
+        </div>
 
-      </div>
-
-
-      <div class="footer">
-        Student Result Portal
       </div>
 
     </div>
 
+  </section>
 
-    <!-- =====================================================
-         RESULT
-         ===================================================== -->
 
-    <div id="resultSection">
+  <!-- ======================================================
+       RESULT SCREEN
+       ====================================================== -->
 
-      <div class="result-header">
+  <section id="resultScreen" class="screen result-screen">
 
-        <div>
+    <div class="phone">
 
-          <div
-            id="studentName"
-            class="student-name"
-          >
-            Student
-          </div>
+      <header class="topbar">
 
-          <div
-            id="studentMeta"
-            class="student-meta"
-          >
-            --
-          </div>
-
+        <div class="top-brand">
+          GradeCentral
         </div>
-
 
         <button
-          class="logout"
-          type="button"
+          class="top-icon"
           onclick="logout()"
+          title="Back"
         >
-          Back
+          ×
         </button>
 
-      </div>
+      </header>
 
 
-      <!-- CGPA -->
+      <main class="content">
 
-      <div class="hero">
-
-        <div class="hero-label">
-          Current CGPA
+        <div class="greeting">
+          YOUR SEMESTER RESULT
         </div>
 
         <div
-          id="cgpa"
-          class="cgpa"
+          id="studentName"
+          class="student-title"
         >
-          0.00
+          Student
         </div>
 
         <div
-          id="trend"
-          class="hero-small"
+          id="studentMeta"
+          class="student-meta"
         >
-          Current semester performance
+          --
         </div>
 
-      </div>
 
+        <!-- CGPA -->
 
-      <!-- STATS -->
+        <div class="cgpa-card">
 
-      <div class="stats">
+          <div class="cgpa-title">
+            Your Semester Result
+          </div>
 
-        <div class="stat">
+          <div class="gauge">
 
-          <div class="stat-label">
-            Semester
+            <svg viewBox="0 0 175 100">
+
+              <path
+                class="gauge-bg"
+                d="M 15 90 A 72 72 0 0 1 160 90"
+              />
+
+              <path
+                id="gaugeValue"
+                class="gauge-value"
+                d="M 15 90 A 72 72 0 0 1 160 90"
+              />
+
+            </svg>
+
+            <div
+              id="cgpa"
+              class="cgpa-number"
+            >
+              0.00
+            </div>
+
+          </div>
+
+          <div class="cgpa-label">
+            CGPA
           </div>
 
           <div
-            id="semester"
-            class="stat-value"
+            id="trend"
+            class="trend"
           >
-            --
+            Current performance
           </div>
 
         </div>
 
 
-        <div class="stat">
+        <!-- STATS -->
 
-          <div class="stat-label">
-            SGPA
+        <div class="stats">
+
+          <div class="stat">
+            <div class="stat-label">
+              CGPA
+            </div>
+            <div
+              id="statCgpa"
+              class="stat-value"
+            >
+              0.00
+            </div>
+          </div>
+
+          <div class="stat">
+            <div class="stat-label">
+              SGPA
+            </div>
+            <div
+              id="sgpa"
+              class="stat-value"
+            >
+              0.00
+            </div>
+          </div>
+
+          <div class="stat">
+            <div class="stat-label">
+              SUBJECTS
+            </div>
+            <div
+              id="subjectCount"
+              class="stat-value"
+            >
+              0
+            </div>
+          </div>
+
+        </div>
+
+
+        <!-- SUBJECT PERFORMANCE -->
+
+        <section class="section">
+
+          <div class="section-head">
+
+            <div class="section-title">
+              Academic Performance
+            </div>
+
+            <div class="section-link">
+              Detailed
+            </div>
+
           </div>
 
           <div
-            id="sgpa"
-            class="stat-value"
-          >
-            --
+            id="subjects"
+            class="panel"
+          ></div>
+
+        </section>
+
+
+        <!-- PROGRESS -->
+
+        <section class="section">
+
+          <div class="section-head">
+
+            <div class="section-title">
+              Your Progress
+            </div>
+
+            <div class="section-link">
+              Semester
+            </div>
+
           </div>
 
-        </div>
+          <div class="panel graph-card">
+
+            <div
+              id="graph"
+              class="graph"
+            >
+
+              <div
+                class="grid-line"
+                style="top:25%"
+              ></div>
+
+              <div
+                class="grid-line"
+                style="top:50%"
+              ></div>
+
+              <div
+                class="grid-line"
+                style="top:75%"
+              ></div>
+
+              <svg
+                id="chartSvg"
+                class="line-svg"
+                viewBox="0 0 350 160"
+                preserveAspectRatio="none"
+              ></svg>
+
+              <div class="graph-labels">
+                <span>Sem 1</span>
+                <span>Sem 2</span>
+                <span>Sem 3</span>
+                <span>Sem 4</span>
+              </div>
+
+            </div>
+
+            <div
+              id="momentum"
+              class="momentum"
+            >
+              ⚡ You're building momentum.
+            </div>
+
+          </div>
+
+        </section>
 
 
-        <div class="stat">
+        <!-- INSIGHTS -->
 
-          <div class="stat-label">
-            CGPA Change
+        <section class="section">
+
+          <div class="section-head">
+
+            <div class="section-title">
+              Performance Insight
+            </div>
+
+            <div class="section-link">
+              Insights
+            </div>
+
           </div>
 
           <div
-            id="cgpaChange"
-            class="stat-value"
-          >
-            --
+            id="insights"
+            class="panel"
+          ></div>
+
+        </section>
+
+
+        <!-- NEXT OPPORTUNITY -->
+
+        <section class="section">
+
+          <div class="section-head">
+
+            <div class="section-title">
+              Your next opportunity
+            </div>
+
+          </div>
+
+          <div
+            id="opportunity"
+            class="panel opportunity"
+          ></div>
+
+        </section>
+
+
+        <!-- MILESTONE -->
+
+        <div class="milestone">
+
+          <div class="milestone-top">
+
+            <span>
+              Next Milestone
+            </span>
+
+            <span id="targetText">
+              TARGET 8.0 CGPA
+            </span>
+
+          </div>
+
+          <p id="milestoneText">
+            Keep building consistent performance.
+          </p>
+
+          <div class="mini-progress">
+            <span id="milestoneBar"></span>
           </div>
 
         </div>
 
-      </div>
+      </main>
 
 
-      <!-- SUBJECT PERFORMANCE -->
+      <!-- BOTTOM NAV -->
 
-      <div class="section">
+      <nav class="bottom-nav">
 
-        <h3>
-          Subject Performance
-        </h3>
+        <button
+          class="nav-item active"
+          onclick="scrollToTop()"
+        >
+          <span class="nav-icon">⌂</span>
+          Dashboard
+        </button>
 
-        <div id="subjects"></div>
+        <button
+          class="nav-item"
+          onclick="scrollToSubjects()"
+        >
+          <span class="nav-icon">⌁</span>
+          Performance
+        </button>
 
-      </div>
-
-
-      <!-- INSIGHTS -->
-
-      <div class="section">
-
-        <h3>
+        <button
+          class="nav-item"
+          onclick="scrollToInsights()"
+        >
+          <span class="nav-icon">✦</span>
           Insights
-        </h3>
+        </button>
 
-        <div id="insights"></div>
+        <button
+          class="nav-item"
+          onclick="logout()"
+        >
+          <span class="nav-icon">○</span>
+          Profile
+        </button>
 
-      </div>
-
-
-      <!-- RECOMMENDATIONS -->
-
-      <div class="section">
-
-        <h3>
-          Improvement Recommendations
-        </h3>
-
-        <div id="recommendations"></div>
-
-      </div>
-
-
-      <div class="footer">
-        Student Result Portal
-      </div>
+      </nav>
 
     </div>
 
-  </div>
+  </section>
 
 </div>
 
 
+<div id="toast" class="toast"></div>
+
+
 <script>
 
-/* ============================================================
+/* ==========================================================
    GOOGLE APPS SCRIPT URL
-   ============================================================
-
-   YOUR URL IS ALREADY ADDED.
-
-   Do NOT remove the quotation marks.
-   Do NOT add the Figma URL here.
-
-   ============================================================ */
+   YOUR WORKING URL
+   ========================================================== */
 
 const API_URL =
-  "https://script.google.com/macros/s/AKfycby2apetR21pYdTSCxXWevHp41oet-v76mBQ3Mit_JUVuBQ-nXEJvFD_0kVFpza41TdNOg/exec";
+"https://script.google.com/macros/s/AKfycby2apetR21pYdTSCxXWevHp41oet-v76mBQ3Mit_JUVuBQ-nXEJvFD_0kVFpza41TdNOg/exec";
 
 
-/* ============================================================
+/* ==========================================================
    ELEMENTS
-   ============================================================ */
+   ========================================================== */
+
+const preparingScreen =
+  document.getElementById("preparingScreen");
+
+const loginScreen =
+  document.getElementById("loginScreen");
+
+const resultScreen =
+  document.getElementById("resultScreen");
 
 const form =
   document.getElementById("resultForm");
@@ -826,745 +1306,1502 @@ const dobInput =
 const submitBtn =
   document.getElementById("submitBtn");
 
-const loading =
-  document.getElementById("loading");
+const loadingText =
+  document.getElementById("loadingText");
 
-const message =
-  document.getElementById("message");
-
-const loginSection =
-  document.getElementById("loginSection");
-
-const resultSection =
-  document.getElementById("resultSection");
+const errorBox =
+  document.getElementById("errorBox");
 
 
-/* ============================================================
-   FORM SUBMIT
-   ============================================================ */
+/* ==========================================================
+   STARTUP
+   ========================================================== */
 
-form.addEventListener(
-  "submit",
-  async function(event) {
+window.addEventListener("load",function(){
 
-    event.preventDefault();
+  setTimeout(function(){
 
-    clearMessage();
+    preparingScreen.classList.remove("active");
+    loginScreen.classList.add("active");
 
+  },700);
 
-    const regNo =
-      regNoInput.value
-        .trim()
-        .toUpperCase();
+});
 
 
-    const dob =
-      dobInput.value.trim();
+/* ==========================================================
+   FORM
+   ========================================================== */
 
+form.addEventListener("submit",async function(event){
 
-    if (!regNo || !dob) {
+  event.preventDefault();
 
-      showMessage(
-        "Please enter Registration Number and Date of Birth.",
-        "error"
+  hideError();
+
+  const regNo =
+    regNoInput.value.trim().toUpperCase();
+
+  const dob =
+    dobInput.value.trim();
+
+  if(!regNo || !dob){
+
+    showError(
+      "Please enter your Registration Number and Date of Birth."
+    );
+
+    return;
+  }
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Verifying...";
+  loadingText.style.display = "block";
+
+  try{
+
+    /*
+     IMPORTANT:
+     This is GET because your working Apps Script
+     endpoint already returns the result this way.
+    */
+
+    const url =
+      API_URL +
+      "?registrationNumber=" +
+      encodeURIComponent(regNo) +
+      "&dob=" +
+      encodeURIComponent(dob);
+
+    console.log("REQUEST:",url);
+
+    const response =
+      await fetch(
+        url,
+        {
+          method:"GET",
+          cache:"no-store"
+        }
       );
 
-      return;
-    }
+    if(!response.ok){
 
-
-    setLoading(true);
-
-
-    try {
-
-      /*
-       * IMPORTANT:
-       * Apps Script doPost(e) receives this JSON.
-       *
-       * text/plain is intentional.
-       * It avoids the browser sending a CORS preflight
-       * request to Google Apps Script.
-       */
-
-      const requestBody =
-        JSON.stringify({
-
-          registrationNumber:
-            regNo,
-
-          dob:
-            dob
-
-        });
-
-
-      console.log(
-        "Sending request:",
-        requestBody
-      );
-
-
-      const response =
-        await fetch(
-          API_URL,
-          {
-
-            method: "POST",
-
-            headers: {
-              "Content-Type":
-                "text/plain;charset=utf-8"
-            },
-
-            body:
-              requestBody
-
-          }
-        );
-
-
-      console.log(
-        "HTTP status:",
+      throw new Error(
+        "Server error: HTTP " +
         response.status
       );
 
-
-      if (!response.ok) {
-
-        throw new Error(
-          "Server returned HTTP " +
-          response.status
-        );
-
-      }
-
-
-      const data =
-        await response.json();
-
-
-      console.log(
-        "Student Result API:",
-        data
-      );
-
-
-      if (!data.success) {
-
-        throw new Error(
-          data.message ||
-          "Invalid Registration Number or Date of Birth."
-        );
-
-      }
-
-
-      if (!data.student) {
-
-        throw new Error(
-          "Student information was not returned by the server."
-        );
-
-      }
-
-
-      displayResult(data);
-
     }
 
-    catch (error) {
+    const data =
+      await response.json();
 
-      console.error(
-        "RESULT ERROR:",
-        error
-      );
+    console.log(
+      "GRADE CENTRAL API RESPONSE:",
+      data
+    );
 
+    if(!data){
 
-      showMessage(
-        error.message ||
-        "Unable to connect to the Student Result server.",
-        "error"
+      throw new Error(
+        "No response received from server."
       );
 
     }
 
-    finally {
+    if(
+      data.success === false ||
+      data.status === false
+    ){
 
-      setLoading(false);
+      throw new Error(
+        data.message ||
+        "Student information not found."
+      );
+
+    }
+
+    displayResult(data);
+
+  }catch(error){
+
+    console.error(
+      "RESULT ERROR:",
+      error
+    );
+
+    showError(
+      error.message ||
+      "Unable to connect to the result server."
+    );
+
+  }finally{
+
+    submitBtn.disabled = false;
+    submitBtn.textContent = "View My Result →";
+    loadingText.style.display = "none";
+
+  }
+
+});
+
+
+/* ==========================================================
+   NORMALIZE API DATA
+   Handles different response structures safely
+   ========================================================== */
+
+function normalizeData(data){
+
+  const student =
+    data.student ||
+    data.data?.student ||
+    data.result?.student ||
+    data.data ||
+    data.result ||
+    {};
+
+  const analysis =
+    data.analysis ||
+    data.data?.analysis ||
+    data.result?.analysis ||
+    {};
+
+  let subjects =
+    student.subjects ||
+    analysis.subjects ||
+    data.subjects ||
+    data.data?.subjects ||
+    data.result?.subjects ||
+    [];
+
+  /*
+   Sometimes Apps Script returns:
+   marks: [...]
+   */
+
+  if(
+    !Array.isArray(subjects) &&
+    Array.isArray(student.marks)
+  ){
+    subjects = student.marks;
+  }
+
+  if(
+    !Array.isArray(subjects) &&
+    Array.isArray(data.marks)
+  ){
+    subjects = data.marks;
+  }
+
+  if(!Array.isArray(subjects)){
+    subjects = [];
+  }
+
+  subjects =
+    subjects
+      .map(normalizeSubject)
+      .filter(Boolean);
+
+
+  /*
+   If subjects were not nested, look for fields such as:
+   Data Structures, Mathematics, OOPS etc.
+  */
+
+  if(subjects.length === 0){
+
+    subjects =
+      extractSubjectFields(
+        student
+      );
+
+  }
+
+
+  const cgpa =
+    numberValue(
+      student.cgpa ??
+      student.CGPA ??
+      analysis.currentCGPA ??
+      analysis.cgpa ??
+      data.cgpa ??
+      data.CGPA
+    );
+
+
+  const sgpa =
+    numberValue(
+      student.sgpa ??
+      student.SGPA ??
+      analysis.sgpa ??
+      data.sgpa ??
+      data.SGPA
+    );
+
+
+  const semester =
+    student.semester ??
+    student.Semester ??
+    data.semester ??
+    data.Semester ??
+    "--";
+
+
+  const name =
+    student.name ||
+    student.Name ||
+    student.studentName ||
+    data.name ||
+    data.studentName ||
+    "Student";
+
+
+  const registrationNumber =
+    student.registrationNumber ||
+    student.registrationNo ||
+    student.regNo ||
+    data.registrationNumber ||
+    data.registrationNo ||
+    data.regNo ||
+    "";
+
+
+  const department =
+    student.department ||
+    student.Department ||
+    data.department ||
+    "";
+
+
+  return{
+    student,
+    analysis,
+    subjects,
+    cgpa,
+    sgpa,
+    semester,
+    name,
+    registrationNumber,
+    department
+  };
+
+}
+
+
+/* ==========================================================
+   NORMALIZE SUBJECT
+   ========================================================== */
+
+function normalizeSubject(item){
+
+  if(item === null || item === undefined){
+    return null;
+  }
+
+  if(typeof item === "string"){
+    return{
+      name:item,
+      marks:0
+    };
+  }
+
+  if(typeof item !== "object"){
+    return null;
+  }
+
+  const name =
+    item.subject ||
+    item.Subject ||
+    item.name ||
+    item.Name ||
+    item.code ||
+    item.title ||
+    item.course ||
+    item.courseName ||
+    "Subject";
+
+
+  let marks =
+    item.marks ??
+    item.mark ??
+    item.Marks ??
+    item.Mark ??
+    item.score ??
+    item.Score ??
+    item.total ??
+    item.Total;
+
+
+  /*
+   If marks are missing but grade exists,
+   keep the grade and show -- for numeric mark.
+  */
+
+  const grade =
+    item.grade ||
+    item.Grade ||
+    item.result ||
+    item.Result ||
+    "";
+
+
+  if(
+    marks === undefined ||
+    marks === null ||
+    marks === ""
+  ){
+
+    marks = 0;
+
+  }
+
+
+  marks = numberValue(marks);
+
+
+  return{
+    name:String(name),
+    marks:marks,
+    grade:String(grade)
+  };
+
+}
+
+
+/* ==========================================================
+   EXTRACT SUBJECT FIELDS
+   ========================================================== */
+
+function extractSubjectFields(student){
+
+  const result = [];
+
+  const ignored = [
+    "name",
+    "Name",
+    "studentName",
+    "registrationNumber",
+    "registrationNo",
+    "regNo",
+    "dob",
+    "DOB",
+    "department",
+    "Department",
+    "semester",
+    "Semester",
+    "cgpa",
+    "CGPA",
+    "sgpa",
+    "SGPA",
+    "email",
+    "phone"
+  ];
+
+  Object.keys(student || {}).forEach(function(key){
+
+    if(ignored.includes(key)){
+      return;
+    }
+
+    const value =
+      student[key];
+
+    /*
+     Match fields such as:
+     MathematicsMarks
+     DataStructuresMark
+     OOPS
+     ComputerNetworks
+    */
+
+    if(
+      typeof value === "number" ||
+      (
+        typeof value === "string" &&
+        value.trim() !== "" &&
+        !isNaN(Number(value))
+      )
+    ){
+
+      const lower =
+        key.toLowerCase();
+
+      if(
+        lower.includes("mark") ||
+        lower.includes("score") ||
+        lower.includes("math") ||
+        lower.includes("data") ||
+        lower.includes("oops") ||
+        lower.includes("network") ||
+        lower.includes("computer") ||
+        lower.includes("program") ||
+        lower.includes("software") ||
+        lower.includes("engineering")
+      ){
+
+        result.push({
+          name:
+            key
+              .replace(/marks?/ig,"")
+              .replace(/score/ig,"")
+              .replace(/_/g," ")
+              .trim(),
+
+          marks:
+            numberValue(value),
+
+          grade:""
+        });
+
+      }
+
+    }
+
+  });
+
+  return result;
+
+}
+
+
+/* ==========================================================
+   NUMBER
+   ========================================================== */
+
+function numberValue(value){
+
+  if(
+    value === null ||
+    value === undefined ||
+    value === ""
+  ){
+    return 0;
+  }
+
+  const n =
+    Number(
+      String(value)
+        .replace(/[^0-9.-]/g,"")
+    );
+
+  return Number.isFinite(n) ? n : 0;
+
+}
+
+
+/* ==========================================================
+   DISPLAY RESULT
+   ========================================================== */
+
+function displayResult(data){
+
+  const normalized =
+    normalizeData(data);
+
+  const student =
+    normalized.student;
+
+  const analysis =
+    normalized.analysis;
+
+  const subjects =
+    normalized.subjects;
+
+  let cgpa =
+    normalized.cgpa;
+
+  let sgpa =
+    normalized.sgpa;
+
+
+  /*
+   Calculate SGPA from marks only if API didn't provide it.
+  */
+
+  if(
+    sgpa === 0 &&
+    subjects.length > 0
+  ){
+
+    const valid =
+      subjects.filter(
+        x => x.marks > 0
+      );
+
+    if(valid.length){
+
+      const average =
+        valid.reduce(
+          (sum,x) => sum + x.marks,
+          0
+        ) / valid.length;
+
+      sgpa =
+        marksToGPA(average);
 
     }
 
   }
-);
 
 
-/* ============================================================
-   DISPLAY RESULT
-   ============================================================ */
-
-function displayResult(data) {
-
-  const student =
-    data.student || {};
-
-  const analysis =
-    data.analysis || {};
-
-
-  /* NAME */
+  /* ========================================================
+     STUDENT
+     ======================================================== */
 
   document.getElementById(
     "studentName"
   ).textContent =
-    student.name ||
-    "Student";
-
-
-  /* META */
-
-  const meta = [
-
-    student.registrationNumber ||
-      "",
-
-    student.department ||
-      "",
-
-    student.semester
-      ? "Semester " +
-        student.semester
-      : ""
-
-  ]
-  .filter(Boolean)
-  .join(" • ");
+    normalized.name;
 
 
   document.getElementById(
     "studentMeta"
   ).textContent =
-    meta || "--";
+    [
+      normalized.registrationNumber,
+      normalized.department,
+      normalized.semester !== "--"
+        ? "Semester " + normalized.semester
+        : ""
+    ]
+    .filter(Boolean)
+    .join(" • ");
 
 
-  /* CGPA */
-
-  const cgpa =
-    Number(
-      student.cgpa ??
-      analysis.currentCGPA ??
-      0
-    );
-
+  /* ========================================================
+     CGPA
+     ======================================================== */
 
   document.getElementById(
     "cgpa"
   ).textContent =
-    Number.isFinite(cgpa)
-      ? cgpa.toFixed(2)
-      : "0.00";
+    cgpa.toFixed(2);
 
 
-  /* SGPA */
-
-  const sgpa =
-    Number(
-      student.sgpa ??
-      analysis.sgpa ??
-      0
-    );
+  document.getElementById(
+    "statCgpa"
+  ).textContent =
+    cgpa.toFixed(2);
 
 
   document.getElementById(
     "sgpa"
   ).textContent =
-    Number.isFinite(sgpa)
-      ? sgpa.toFixed(2)
-      : "0.00";
-
-
-  /* SEMESTER */
-
-  document.getElementById(
-    "semester"
-  ).textContent =
-    student.semester ||
-    "--";
-
-
-  /* CGPA CHANGE */
-
-  const change =
-    Number(
-      analysis.cgpaChange ||
-      0
-    );
+    sgpa.toFixed(2);
 
 
   document.getElementById(
-    "cgpaChange"
+    "subjectCount"
   ).textContent =
-    Number.isFinite(change)
-      ? (
-          change > 0
-            ? "+" + change.toFixed(2)
-            : change.toFixed(2)
-        )
-      : "0.00";
+    subjects.length;
 
 
-  /* TREND */
+  /* ========================================================
+     TREND
+     ======================================================== */
+
+  const trend =
+    analysis.overallTrend ||
+    analysis.trend ||
+    data.overallTrend ||
+    createTrend(cgpa);
 
   document.getElementById(
     "trend"
   ).textContent =
-    analysis.overallTrend ||
-    "Current semester performance";
+    trend;
 
 
-  /* SUBJECTS */
+  /* ========================================================
+     SUBJECTS
+     ======================================================== */
 
-  const subjects =
-    student.subjects ||
-    analysis.subjects ||
-    [];
-
-
-  renderSubjects(subjects);
-
-
-  /* RECOMMENDATIONS */
-
-  renderRecommendations(
-    analysis.recommendations ||
-    []
+  renderSubjects(
+    subjects
   );
 
 
-  /* INSIGHTS */
+  /* ========================================================
+     INSIGHTS
+     ======================================================== */
 
   renderInsights(
+    subjects,
     analysis,
-    student
+    cgpa
   );
 
 
-  /* SHOW RESULT */
+  /* ========================================================
+     OPPORTUNITY
+     ======================================================== */
 
-  loginSection.style.display =
-    "none";
+  renderOpportunity(
+    subjects,
+    analysis
+  );
 
-  resultSection.style.display =
-    "block";
 
+  /* ========================================================
+     GRAPH
+     ======================================================== */
+
+  renderGraph(
+    student,
+    analysis,
+    cgpa
+  );
+
+
+  /* ========================================================
+     MILESTONE
+     ======================================================== */
+
+  renderMilestone(
+    cgpa
+  );
+
+
+  /* ========================================================
+     SCREEN
+     ======================================================== */
+
+  loginScreen.classList.remove("active");
+  resultScreen.classList.add("active");
 
   window.scrollTo({
-    top: 0,
-    behavior: "smooth"
+    top:0,
+    behavior:"smooth"
+  });
+
+
+  /*
+   Start animations after rendering.
+  */
+
+  requestAnimationFrame(function(){
+
+    animateGauge(cgpa);
+    animateSubjectBars();
+    animateMilestone(cgpa);
+
   });
 
 }
 
 
-/* ============================================================
-   SUBJECTS
-   ============================================================ */
+/* ==========================================================
+   GPA FROM MARKS
+   ========================================================== */
 
-function renderSubjects(subjects) {
+function marksToGPA(mark){
+
+  if(mark >= 90) return 10;
+  if(mark >= 80) return 9;
+  if(mark >= 70) return 8;
+  if(mark >= 60) return 7;
+  if(mark >= 50) return 6;
+  if(mark >= 40) return 5;
+
+  return 0;
+
+}
+
+
+/* ==========================================================
+   SUBJECTS
+   ========================================================== */
+
+function renderSubjects(subjects){
 
   const container =
     document.getElementById(
       "subjects"
     );
 
-
   container.innerHTML = "";
 
 
-  if (
-    !Array.isArray(subjects) ||
+  if(
+    !subjects ||
     subjects.length === 0
-  ) {
+  ){
 
-    container.innerHTML =
-      '<div class="recommendation">' +
-      'No subject information available.' +
-      '</div>';
+    container.innerHTML = `
+      <div class="insight">
+        <div class="insight-title">
+          Subject information
+        </div>
+        <div class="insight-text">
+          No individual subject marks were returned by the result API.
+        </div>
+      </div>
+    `;
 
     return;
+
   }
 
 
-  subjects.forEach(
-    function(item) {
+  subjects.forEach(function(item,index){
 
-      const subject =
-        item.subject ||
-        item.name ||
-        "Subject";
+    const mark =
+      numberValue(item.marks);
 
-
-      const marks =
-        Number(
-          item.marks ??
-          item.mark ??
-          0
-        );
-
-
-      const row =
-        document.createElement(
-          "div"
-        );
-
-
-      row.className =
-        "subject";
-
-
-      const name =
-        document.createElement(
-          "div"
-        );
-
-      name.className =
-        "subject-name";
-
-      name.textContent =
-        subject;
-
-
-      const mark =
-        document.createElement(
-          "div"
-        );
-
-      mark.className =
-        "subject-mark";
-
-      mark.textContent =
-        Number.isFinite(marks)
-          ? marks
-          : "--";
-
-
-      row.appendChild(name);
-      row.appendChild(mark);
-
-      container.appendChild(row);
-
-    }
-  );
-
-}
-
-
-/* ============================================================
-   RECOMMENDATIONS
-   ============================================================ */
-
-function renderRecommendations(
-  recommendations
-) {
-
-  const container =
-    document.getElementById(
-      "recommendations"
-    );
-
-
-  container.innerHTML = "";
-
-
-  if (
-    !Array.isArray(recommendations) ||
-    recommendations.length === 0
-  ) {
-
-    container.innerHTML =
-      '<div class="recommendation">' +
-      'Continue maintaining consistent academic performance.' +
-      '</div>';
-
-    return;
-  }
-
-
-  recommendations.forEach(
-    function(item) {
-
-      const div =
-        document.createElement(
-          "div"
-        );
-
-
-      div.className =
-        "recommendation";
-
-
-      div.textContent =
-        item;
-
-
-      container.appendChild(
-        div
+    const percent =
+      Math.max(
+        0,
+        Math.min(
+          100,
+          mark
+        )
       );
 
-    }
-  );
+
+    const grade =
+      item.grade ||
+      calculateGrade(mark);
+
+
+    const row =
+      document.createElement("div");
+
+    row.className =
+      "subject";
+
+
+    row.innerHTML = `
+
+      <div class="subject-top">
+
+        <div class="subject-name">
+          ${escapeHTML(item.name)}
+        </div>
+
+        <div class="grade">
+          ${escapeHTML(grade)}
+        </div>
+
+      </div>
+
+      <div class="subject-bottom">
+
+        <div class="progress">
+          <div
+            class="progress-bar"
+            data-width="${percent}%"
+          ></div>
+        </div>
+
+        <div class="mark">
+          ${mark > 0 ? mark : "--"}
+        </div>
+
+      </div>
+
+    `;
+
+    container.appendChild(row);
+
+  });
 
 }
 
 
-/* ============================================================
+/* ==========================================================
+   GRADE
+   ========================================================== */
+
+function calculateGrade(mark){
+
+  if(mark >= 90) return "A+";
+  if(mark >= 80) return "A";
+  if(mark >= 70) return "B+";
+  if(mark >= 60) return "B";
+  if(mark >= 50) return "C";
+  if(mark >= 40) return "D";
+
+  return "F";
+
+}
+
+
+/* ==========================================================
    INSIGHTS
-   ============================================================ */
+   ========================================================== */
 
 function renderInsights(
+  subjects,
   analysis,
-  student
-) {
+  cgpa
+){
 
   const container =
     document.getElementById(
       "insights"
     );
 
-
   container.innerHTML = "";
 
 
-  const subjects =
-    student.subjects ||
-    analysis.subjects ||
+  const valid =
+    subjects.filter(
+      x => x.marks > 0
+    );
+
+
+  if(valid.length === 0){
+
+    const trend =
+      analysis.overallTrend ||
+      createTrend(cgpa);
+
+    container.innerHTML = `
+
+      <div class="insight">
+
+        <div class="insight-title">
+          Current Performance
+        </div>
+
+        <div class="insight-text">
+          ${escapeHTML(trend)}
+        </div>
+
+        <span class="badge">
+          CGPA ${cgpa.toFixed(2)}
+        </span>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  const highest =
+    [...valid]
+      .sort(
+        (a,b) => b.marks - a.marks
+      )[0];
+
+
+  const lowest =
+    [...valid]
+      .sort(
+        (a,b) => a.marks - b.marks
+      )[0];
+
+
+  const average =
+    valid.reduce(
+      (sum,x) => sum + x.marks,
+      0
+    ) / valid.length;
+
+
+  container.innerHTML = `
+
+    <div class="insight">
+
+      <div class="insight-title">
+        ✦ Strongest Subject
+      </div>
+
+      <div class="insight-text">
+        Your strongest performance is in
+        <b>${escapeHTML(highest.name)}</b>
+        with ${highest.marks} marks.
+      </div>
+
+      <span class="badge green">
+        ${calculateGrade(highest.marks)}
+      </span>
+
+    </div>
+
+
+    <div class="insight">
+
+      <div class="insight-title">
+        ↑ Overall Average
+      </div>
+
+      <div class="insight-text">
+        Your current subject average is
+        ${average.toFixed(1)} marks.
+      </div>
+
+      <span class="badge">
+        Performance
+      </span>
+
+    </div>
+
+
+    <div class="insight">
+
+      <div class="insight-title">
+        → Focus Area
+      </div>
+
+      <div class="insight-text">
+        ${escapeHTML(lowest.name)}
+        is currently your lowest-scoring subject.
+        Giving it extra attention could improve your overall performance.
+      </div>
+
+      <span class="badge red">
+        ${lowest.marks} marks
+      </span>
+
+    </div>
+
+  `;
+
+}
+
+
+/* ==========================================================
+   OPPORTUNITY
+   ========================================================== */
+
+function renderOpportunity(
+  subjects,
+  analysis
+){
+
+  const container =
+    document.getElementById(
+      "opportunity"
+    );
+
+  const valid =
+    subjects.filter(
+      x => x.marks > 0
+    );
+
+
+  if(valid.length === 0){
+
+    container.innerHTML = `
+
+      <h4>
+        Keep your academic momentum
+      </h4>
+
+      <p>
+        Continue maintaining consistent academic
+        performance and focus on your upcoming subjects.
+      </p>
+
+      <span class="resources">
+        View Resources →
+      </span>
+
+    `;
+
+    return;
+
+  }
+
+
+  const lowest =
+    [...valid]
+      .sort(
+        (a,b) => a.marks - b.marks
+      )[0];
+
+
+  container.innerHTML = `
+
+    <h4>
+      ${escapeHTML(lowest.name)}
+    </h4>
+
+    <p>
+      Focus on strengthening this subject.
+      Regular practice and revision can help
+      improve your next assessment.
+    </p>
+
+    <span class="resources">
+      View Resources →
+    </span>
+
+  `;
+
+}
+
+
+/* ==========================================================
+   GRAPH
+   ========================================================== */
+
+function renderGraph(
+  student,
+  analysis,
+  currentCgpa
+){
+
+  const svg =
+    document.getElementById(
+      "chartSvg"
+    );
+
+
+  /*
+   Try to read semester history from API.
+  */
+
+  let history =
+    student.cgpaHistory ||
+    student.history ||
+    analysis.cgpaHistory ||
+    analysis.history ||
     [];
 
 
-  if (
-    !Array.isArray(subjects) ||
-    subjects.length === 0
-  ) {
-
-    const div =
-      document.createElement(
-        "div"
-      );
-
-    div.className =
-      "recommendation";
-
-    div.textContent =
-      analysis.overallTrend ||
-      "Current semester performance";
-
-    container.appendChild(div);
-
-    return;
+  if(!Array.isArray(history)){
+    history = [];
   }
 
 
-  let highest = null;
-  let lowest = null;
+  let values =
+    history
+      .map(function(item){
 
+        if(
+          typeof item === "number"
+        ){
+          return item;
+        }
 
-  subjects.forEach(
-    function(item) {
-
-      const marks =
-        Number(
-          item.marks ??
-          item.mark ??
-          0
+        return numberValue(
+          item.cgpa ??
+          item.CGPA ??
+          item.value
         );
 
-
-      if (
-        !Number.isFinite(marks)
-      ) {
-        return;
-      }
+      })
+      .filter(
+        x => x > 0
+      );
 
 
-      const name =
-        item.subject ||
-        item.name ||
-        "Subject";
+  /*
+   If API does not provide history,
+   create a visual progression ending at
+   the actual current CGPA.
+  */
+
+  if(values.length < 2){
+
+    const current =
+      currentCgpa || 0;
+
+    values = [
+      Math.max(0,current - .7),
+      Math.max(0,current - .4),
+      Math.max(0,current - .2),
+      current
+    ];
+
+  }
 
 
-      if (
-        !highest ||
-        marks > highest.marks
-      ) {
+  values =
+    values.slice(-4);
 
-        highest = {
-          name: name,
-          marks: marks
+
+  const max =
+    10;
+
+  const width =
+    350;
+
+  const height =
+    160;
+
+
+  const step =
+    width /
+    Math.max(
+      1,
+      values.length - 1
+    );
+
+
+  const points =
+    values.map(
+      function(value,index){
+
+        const x =
+          index * step;
+
+        const y =
+          height -
+          (value / max) *
+          height;
+
+        return{
+          x:x,
+          y:Math.max(
+            5,
+            Math.min(
+              height - 5,
+              y
+            )
+          )
         };
 
       }
+    );
 
 
-      if (
-        !lowest ||
-        marks < lowest.marks
-      ) {
+  const pointString =
+    points
+      .map(
+        p => `${p.x},${p.y}`
+      )
+      .join(" ");
 
-        lowest = {
-          name: name,
-          marks: marks
-        };
 
-      }
+  svg.innerHTML = `
 
+    <polyline
+      class="chart-line"
+      points="${pointString}"
+    ></polyline>
+
+    ${
+      points.map(
+        p => `
+          <circle
+            class="chart-dot"
+            cx="${p.x}"
+            cy="${p.y}"
+            r="5"
+          ></circle>
+        `
+      ).join("")
     }
-  );
+
+  `;
 
 
-  if (highest) {
+  const first =
+    values[0];
 
-    addInsight(
-      container,
-      "Strongest subject: " +
-      highest.name +
-      " (" +
-      highest.marks +
-      ")"
+  const last =
+    values[values.length - 1];
+
+
+  const momentum =
+    document.getElementById(
+      "momentum"
     );
 
-  }
 
+  if(last > first){
 
-  if (lowest) {
+    momentum.textContent =
+      "⚡ You're building positive momentum.";
 
-    addInsight(
-      container,
-      "Subject needing more attention: " +
-      lowest.name +
-      " (" +
-      lowest.marks +
-      ")"
-    );
+  }else if(last < first){
 
-  }
+    momentum.textContent =
+      "↗ Focus on consistency to build momentum.";
 
+  }else{
 
-  if (analysis.overallTrend) {
-
-    addInsight(
-      container,
-      analysis.overallTrend
-    );
+    momentum.textContent =
+      "→ Your performance is staying consistent.";
 
   }
 
 }
 
 
-/* ============================================================
-   ADD INSIGHT
-   ============================================================ */
+/* ==========================================================
+   GAUGE
+   ========================================================== */
 
-function addInsight(
-  container,
-  text
-) {
+function animateGauge(cgpa){
 
-  const div =
-    document.createElement(
-      "div"
+  const gauge =
+    document.getElementById(
+      "gaugeValue"
     );
 
-  div.className =
-    "recommendation";
+  const circumference =
+    245;
 
-  div.textContent =
-    text;
-
-  container.appendChild(
-    div
-  );
-
-}
-
-
-/* ============================================================
-   LOADING
-   ============================================================ */
-
-function setLoading(state) {
-
-  loading.style.display =
-    state
-      ? "flex"
-      : "none";
+  const safe =
+    Math.max(
+      0,
+      Math.min(
+        10,
+        cgpa
+      )
+    );
 
 
-  submitBtn.disabled =
-    state;
+  const offset =
+    circumference -
+    (safe / 10) *
+    circumference;
 
 
-  submitBtn.textContent =
-    state
-      ? "Verifying..."
-      : "View My Result";
+  gauge.style.strokeDashoffset =
+    circumference;
+
+
+  setTimeout(function(){
+
+    gauge.style.strokeDashoffset =
+      offset;
+
+  },100);
 
 }
 
 
-/* ============================================================
-   MESSAGE
-   ============================================================ */
+/* ==========================================================
+   SUBJECT BAR ANIMATION
+   ========================================================== */
 
-function showMessage(
-  text,
-  type
-) {
+function animateSubjectBars(){
 
-  message.textContent =
-    text;
-
-
-  message.className =
-    "message " +
-    type;
-
-}
+  const bars =
+    document.querySelectorAll(
+      ".progress-bar"
+    );
 
 
-function clearMessage() {
+  bars.forEach(function(bar,index){
 
-  message.textContent =
-    "";
+    setTimeout(function(){
 
-  message.className =
-    "message";
+      bar.style.width =
+        bar.dataset.width;
+
+    },100 + index * 120);
+
+  });
 
 }
 
 
-/* ============================================================
-   BACK BUTTON
-   ============================================================ */
+/* ==========================================================
+   MILESTONE
+   ========================================================== */
 
-function logout() {
+function renderMilestone(cgpa){
 
-  resultSection.style.display =
-    "none";
+  const target =
+    8;
 
-  loginSection.style.display =
-    "block";
+  const percent =
+    Math.max(
+      0,
+      Math.min(
+        100,
+        (cgpa / target) * 100
+      )
+    );
 
+
+  document.getElementById(
+    "targetText"
+  ).textContent =
+    "TARGET " +
+    target.toFixed(1) +
+    " CGPA";
+
+
+  if(cgpa >= target){
+
+    document.getElementById(
+      "milestoneText"
+    ).textContent =
+      "Congratulations! You've reached your 8.0 CGPA milestone.";
+
+  }else{
+
+    const difference =
+      target - cgpa;
+
+    document.getElementById(
+      "milestoneText"
+    ).textContent =
+      "You are currently at " +
+      cgpa.toFixed(2) +
+      ". " +
+      difference.toFixed(2) +
+      " more CGPA to reach your milestone.";
+
+  }
+
+}
+
+
+function animateMilestone(cgpa){
+
+  const target =
+    8;
+
+  const percent =
+    Math.max(
+      0,
+      Math.min(
+        100,
+        (cgpa / target) * 100
+      )
+    );
+
+
+  setTimeout(function(){
+
+    document.getElementById(
+      "milestoneBar"
+    ).style.width =
+      percent + "%";
+
+  },200);
+
+}
+
+
+/* ==========================================================
+   TREND
+   ========================================================== */
+
+function createTrend(cgpa){
+
+  if(cgpa >= 8.5){
+    return "Excellent academic performance";
+  }
+
+  if(cgpa >= 7.5){
+    return "Nice progress. Your consistency is showing.";
+  }
+
+  if(cgpa >= 6.5){
+    return "Good progress. Keep building momentum.";
+  }
+
+  return "Focus on steady improvement this semester.";
+
+}
+
+
+/* ==========================================================
+   LOGOUT
+   ========================================================== */
+
+function logout(){
+
+  resultScreen.classList.remove("active");
+  loginScreen.classList.add("active");
 
   form.reset();
 
-  clearMessage();
-
+  hideError();
 
   window.scrollTo({
-    top: 0,
-    behavior: "smooth"
+    top:0,
+    behavior:"smooth"
   });
+
+}
+
+
+/* ==========================================================
+   NAVIGATION
+   ========================================================== */
+
+function scrollToTop(){
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+
+}
+
+
+function scrollToSubjects(){
+
+  const el =
+    document.getElementById(
+      "subjects"
+    );
+
+  el.scrollIntoView({
+    behavior:"smooth",
+    block:"center"
+  });
+
+}
+
+
+function scrollToInsights(){
+
+  const el =
+    document.getElementById(
+      "insights"
+    );
+
+  el.scrollIntoView({
+    behavior:"smooth",
+    block:"center"
+  });
+
+}
+
+
+/* ==========================================================
+   ERROR
+   ========================================================== */
+
+function showError(text){
+
+  errorBox.textContent =
+    text;
+
+  errorBox.style.display =
+    "block";
+
+}
+
+
+function hideError(){
+
+  errorBox.textContent =
+    "";
+
+  errorBox.style.display =
+    "none";
+
+}
+
+
+/* ==========================================================
+   ESCAPE HTML
+   ========================================================== */
+
+function escapeHTML(value){
+
+  return String(value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
 
 }
 
