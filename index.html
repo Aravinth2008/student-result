@@ -1,0 +1,2200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>GradeCentral — Student Performance</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #fdf8f8;
+      --card: #ffffff;
+      --text: #151515;
+      --muted: #777;
+      --purple: #5550e8;
+      --purple-light: #eeeefe;
+      --green: #16a085;
+      --orange: #e99535;
+      --border: #eeeeee;
+    }
+
+    body {
+      font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+      background: #181818;
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    button,
+    input {
+      font-family: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    /* =========================================================
+       APP
+    ========================================================= */
+
+    #app {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 25px;
+    }
+
+    .phone {
+      width: 390px;
+      min-height: 760px;
+      max-height: 900px;
+
+      background: var(--bg);
+
+      overflow: hidden;
+      position: relative;
+
+      border-radius: 4px;
+
+      box-shadow:
+        0 20px 70px rgba(0,0,0,.35);
+    }
+
+    .screen {
+      min-height: 760px;
+      height: 100%;
+      overflow-y: auto;
+      padding-bottom: 75px;
+    }
+
+    .screen::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .screen::-webkit-scrollbar-thumb {
+      background: #ddd;
+      border-radius: 10px;
+    }
+
+    /* =========================================================
+       COMMON
+    ========================================================= */
+
+    .hidden {
+      display: none !important;
+    }
+
+    .top-logo {
+      padding: 22px 22px 0;
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    .small {
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .purple {
+      color: var(--purple);
+    }
+
+    /* =========================================================
+       PREPARING SCREEN
+    ========================================================= */
+
+    #preparingScreen {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      text-align: center;
+      min-height: 760px;
+    }
+
+    .preparing-content {
+      padding: 100px 35px 0;
+    }
+
+    .brand {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+
+    .brand-subtitle {
+      font-size: 11px;
+      color: #555;
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      margin: 20px auto;
+
+      border-radius: 50%;
+
+      background: #050505;
+      color: white;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 18px;
+    }
+
+    .loading-ring {
+      width: 12px;
+      height: 12px;
+
+      border: 1.5px solid #ff3ca7;
+      border-top-color: transparent;
+
+      border-radius: 50%;
+
+      margin: 18px auto 70px;
+
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .preparing-title {
+      font-size: 20px;
+      line-height: 1.2;
+      margin-bottom: 14px;
+    }
+
+    .preparing-description {
+      font-size: 10px;
+      line-height: 1.5;
+      color: #888;
+    }
+
+    .stages {
+      display: flex;
+      justify-content: center;
+      gap: 9px;
+
+      font-size: 7px;
+      font-weight: 700;
+
+      margin-top: 20px;
+    }
+
+    .stage-active {
+      color: #111;
+    }
+
+    .stage-muted {
+      color: #aaa;
+    }
+
+    .preparing-footer {
+      padding-bottom: 25px;
+      font-size: 8px;
+      color: #aaa;
+    }
+
+    /* =========================================================
+       VERIFICATION
+    ========================================================= */
+
+    #verificationScreen {
+      padding: 0 20px;
+    }
+
+    .verify-header {
+      padding: 20px 0 35px;
+      text-align: center;
+    }
+
+    .verify-header h1 {
+      font-size: 14px;
+    }
+
+    .verify-card {
+      background: white;
+      border-radius: 8px;
+      padding: 22px 16px;
+
+      box-shadow: 0 3px 15px rgba(0,0,0,.05);
+    }
+
+    .verify-card h2 {
+      font-size: 20px;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .verify-card > p {
+      text-align: center;
+      color: #777;
+      font-size: 9px;
+      line-height: 1.5;
+      margin-bottom: 25px;
+    }
+
+    .field {
+      margin-bottom: 17px;
+    }
+
+    .field label {
+      display: block;
+      text-transform: uppercase;
+      font-size: 7px;
+      font-weight: 700;
+      color: #777;
+      margin-bottom: 6px;
+    }
+
+    .input-wrapper {
+      position: relative;
+    }
+
+    .input-wrapper input {
+      width: 100%;
+      height: 36px;
+
+      border: 0;
+      background: #eeeaea;
+
+      border-radius: 5px;
+
+      padding: 0 12px;
+      font-size: 10px;
+      outline: none;
+    }
+
+    .input-wrapper input:focus {
+      box-shadow: 0 0 0 2px rgba(85,80,232,.2);
+    }
+
+    .verify-button {
+      width: 100%;
+      height: 38px;
+
+      border: none;
+      border-radius: 5px;
+
+      background: #050505;
+      color: white;
+
+      font-size: 10px;
+      font-weight: 600;
+    }
+
+    .verify-button:disabled {
+      opacity: .5;
+    }
+
+    .verify-error {
+      display: none;
+
+      margin-top: 12px;
+      padding: 9px;
+
+      border-radius: 5px;
+
+      background: #fff0f0;
+      color: #d33;
+
+      font-size: 8px;
+      text-align: center;
+    }
+
+    .privacy {
+      margin-top: 18px;
+      font-size: 7px;
+      color: #999;
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    /* =========================================================
+       DASHBOARD HEADER
+    ========================================================= */
+
+    .dashboard {
+      padding: 0 13px;
+    }
+
+    .dashboard-header {
+      padding: 16px 5px 13px;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .dashboard-brand {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .dashboard-logo {
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .profile-circle {
+      width: 20px;
+      height: 20px;
+
+      border-radius: 50%;
+      background: #eee;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 9px;
+    }
+
+    /* =========================================================
+       HERO CGPA
+    ========================================================= */
+
+    .hero-result {
+      text-align: center;
+      padding: 8px 15px 20px;
+    }
+
+    .hero-result h2 {
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .hero-result p {
+      font-size: 8px;
+      color: #777;
+      line-height: 1.4;
+    }
+
+    .gauge {
+      width: 125px;
+      height: 125px;
+
+      margin: 18px auto 10px;
+
+      position: relative;
+    }
+
+    .gauge svg {
+      width: 125px;
+      height: 125px;
+      transform: rotate(-90deg);
+    }
+
+    .gauge-bg {
+      fill: none;
+      stroke: #dedede;
+      stroke-width: 8;
+    }
+
+    .gauge-value {
+      fill: none;
+      stroke: var(--purple);
+      stroke-width: 8;
+
+      stroke-linecap: round;
+
+      stroke-dasharray: 330;
+      stroke-dashoffset: 85;
+
+      transition: stroke-dashoffset 1s ease;
+    }
+
+    .gauge-center {
+      position: absolute;
+      inset: 0;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    .gauge-number {
+      font-size: 23px;
+      font-weight: 700;
+    }
+
+    .gauge-label {
+      font-size: 7px;
+      color: #777;
+      text-transform: uppercase;
+    }
+
+    .cgpa-change {
+      display: inline-block;
+
+      padding: 4px 7px;
+
+      border-radius: 10px;
+
+      background: #e6faf5;
+      color: #159b81;
+
+      font-size: 7px;
+      font-weight: 600;
+    }
+
+    .progress-message {
+      font-size: 9px;
+      margin-top: 20px;
+    }
+
+    /* =========================================================
+       STAT CARDS
+    ========================================================= */
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+
+      gap: 7px;
+
+      margin: 0 0 13px;
+    }
+
+    .stat-card {
+      background: white;
+
+      border-radius: 6px;
+
+      padding: 11px;
+
+      min-height: 58px;
+
+      box-shadow: 0 2px 8px rgba(0,0,0,.03);
+    }
+
+    .stat-title {
+      font-size: 6px;
+      color: #888;
+      text-transform: uppercase;
+      margin-bottom: 7px;
+    }
+
+    .stat-value {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .stat-change {
+      float: right;
+      font-size: 6px;
+      color: #17a689;
+    }
+
+    .best {
+      color: var(--purple);
+    }
+
+    /* =========================================================
+       BUTTONS
+    ========================================================= */
+
+    .main-button {
+      display: block;
+
+      margin: 10px auto;
+
+      border: none;
+      background: #050505;
+      color: white;
+
+      padding: 9px 17px;
+
+      border-radius: 5px;
+
+      font-size: 8px;
+      font-weight: 600;
+    }
+
+    /* =========================================================
+       ANALYTICS
+    ========================================================= */
+
+    .section {
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: 13px;
+      margin-bottom: 9px;
+    }
+
+    .subject-card {
+      background: white;
+
+      border-radius: 7px;
+
+      padding: 10px;
+
+      margin-bottom: 7px;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .subject-name {
+      font-size: 9px;
+      font-weight: 700;
+    }
+
+    .subject-type {
+      font-size: 6px;
+      color: #777;
+      margin-top: 3px;
+    }
+
+    .subject-score {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .grade {
+      font-size: 6px;
+      color: #777;
+    }
+
+    .score {
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .up,
+    .down {
+      width: 14px;
+      height: 14px;
+
+      border-radius: 50%;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 7px;
+    }
+
+    .up {
+      background: #e9f9f5;
+      color: #14a484;
+    }
+
+    .down {
+      background: #fff0dc;
+      color: #e18a20;
+    }
+
+    /* =========================================================
+       CHART
+    ========================================================= */
+
+    .chart-card {
+      background: white;
+      border-radius: 7px;
+      padding: 12px;
+    }
+
+    .chart {
+      height: 125px;
+      position: relative;
+      margin-top: 5px;
+    }
+
+    .chart-lines {
+      position: absolute;
+      inset: 15px 0 25px;
+
+      background:
+        repeating-linear-gradient(
+          to bottom,
+          #eeeeee 0,
+          #eeeeee 1px,
+          transparent 1px,
+          transparent 25%
+        );
+    }
+
+    .chart-svg {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+    }
+
+    .chart-labels {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+
+      display: flex;
+      justify-content: space-around;
+
+      font-size: 6px;
+      color: #888;
+    }
+
+    .momentum {
+      background: #fafafa;
+      border-radius: 5px;
+      padding: 9px;
+      font-size: 7px;
+      color: #666;
+      margin-top: 7px;
+    }
+
+    /* =========================================================
+       INSIGHTS
+    ========================================================= */
+
+    .insight-card {
+      background: white;
+      border-radius: 7px;
+      padding: 14px;
+      margin-bottom: 10px;
+    }
+
+    .insight-heading {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+
+      font-size: 10px;
+      font-weight: 700;
+
+      margin-bottom: 8px;
+    }
+
+    .insight-icon {
+      width: 17px;
+      height: 17px;
+
+      border-radius: 50%;
+
+      background: #eeeeff;
+      color: var(--purple);
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 8px;
+    }
+
+    .insight-card p {
+      font-size: 8px;
+      line-height: 1.55;
+      color: #555;
+    }
+
+    .tag-row {
+      display: flex;
+      gap: 5px;
+      margin-top: 9px;
+    }
+
+    .tag {
+      padding: 4px 6px;
+      border-radius: 10px;
+      font-size: 6px;
+    }
+
+    .tag.green {
+      background: #ebfaf6;
+      color: #159b81;
+    }
+
+    .tag.red {
+      background: #fff0f0;
+      color: #df6868;
+    }
+
+    .opportunity {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      background: white;
+      border-radius: 7px;
+
+      padding: 13px;
+      margin-bottom: 8px;
+    }
+
+    .opportunity h3 {
+      font-size: 9px;
+      margin-bottom: 4px;
+    }
+
+    .opportunity p {
+      font-size: 7px;
+      color: #777;
+      line-height: 1.5;
+      max-width: 230px;
+    }
+
+    .arrow {
+      font-size: 15px;
+    }
+
+    .resource-button {
+      margin-top: 7px;
+
+      border: 1px solid #ddd;
+      background: white;
+
+      border-radius: 4px;
+
+      padding: 5px 8px;
+
+      font-size: 6px;
+    }
+
+    /* =========================================================
+       MILESTONE
+    ========================================================= */
+
+    .milestone {
+      background: white;
+      border-radius: 7px;
+      padding: 12px;
+    }
+
+    .milestone-top {
+      display: flex;
+      justify-content: space-between;
+      font-size: 8px;
+      font-weight: 700;
+    }
+
+    .milestone small {
+      display: block;
+      color: #777;
+      font-size: 6px;
+      margin-top: 3px;
+    }
+
+    .progress-bar {
+      height: 4px;
+      background: #eee;
+      border-radius: 10px;
+      margin-top: 10px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      width: 76%;
+      height: 100%;
+      background: var(--purple);
+      border-radius: 10px;
+    }
+
+    /* =========================================================
+       BOTTOM NAV
+    ========================================================= */
+
+    .bottom-nav {
+      position: absolute;
+
+      bottom: 0;
+      left: 0;
+      right: 0;
+
+      height: 58px;
+
+      background: rgba(255,255,255,.96);
+
+      border-top: 1px solid #eee;
+
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+
+      z-index: 20;
+    }
+
+    .nav-item {
+      border: none;
+      background: transparent;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      gap: 4px;
+
+      font-size: 6px;
+      color: #777;
+    }
+
+    .nav-icon {
+      font-size: 13px;
+    }
+
+    .nav-item.active {
+      color: var(--purple);
+      font-weight: 700;
+    }
+
+    /* =========================================================
+       DESKTOP
+    ========================================================= */
+
+    @media (min-width: 700px) {
+
+      #app {
+        padding: 40px;
+      }
+
+      .phone {
+        width: 390px;
+      }
+    }
+
+    @media (max-width: 450px) {
+
+      body {
+        background: var(--bg);
+      }
+
+      #app {
+        padding: 0;
+      }
+
+      .phone {
+        width: 100%;
+        min-height: 100vh;
+        max-height: none;
+        border-radius: 0;
+        box-shadow: none;
+      }
+
+      .screen {
+        min-height: 100vh;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+
+<div id="app">
+
+  <div class="phone">
+
+    <!-- =====================================================
+         1. PREPARING EXPERIENCE
+    ====================================================== -->
+
+    <section
+      id="preparingScreen"
+      class="screen"
+    >
+
+      <div class="preparing-content">
+
+        <div class="brand">
+          GradeCentral
+        </div>
+
+        <div class="brand-subtitle">
+          Student Performance
+        </div>
+
+        <div class="brand-icon">
+          ↻
+        </div>
+
+        <div class="loading-ring"></div>
+
+        <h1 class="preparing-title">
+          Preparing your result<br>
+          experience
+        </h1>
+
+        <p class="preparing-description">
+          Please wait while we securely prepare the
+          experience for you.
+        </p>
+
+        <div class="stages">
+          <span class="stage-active">CONNECTING</span>
+          <span class="stage-muted">•</span>
+          <span class="stage-active">PREPARING</span>
+          <span class="stage-muted">•</span>
+          <span class="stage-muted">READY</span>
+        </div>
+
+      </div>
+
+      <div class="preparing-footer">
+        SECURE STUDENT RESULT PORTAL
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         2. IDENTITY VERIFICATION
+    ====================================================== -->
+
+    <section
+      id="verificationScreen"
+      class="screen hidden"
+    >
+
+      <div class="verify-header">
+
+        <div class="brand">
+          GradeCentral
+        </div>
+
+      </div>
+
+      <div class="verify-card">
+
+        <h2>
+          Check your result
+        </h2>
+
+        <p>
+          Enter your college details to securely
+          access your result.
+        </p>
+
+        <form id="resultForm">
+
+          <div class="field">
+
+            <label for="regNo">
+              Registration Number
+            </label>
+
+            <div class="input-wrapper">
+
+              <input
+                id="regNo"
+                type="text"
+                placeholder="23CS1042"
+                autocomplete="off"
+                required
+              >
+
+            </div>
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="dob">
+              Date of Birth
+            </label>
+
+            <div class="input-wrapper">
+
+              <input
+                id="dob"
+                type="date"
+                required
+              >
+
+            </div>
+
+          </div>
+
+
+          <button
+            id="verifyButton"
+            class="verify-button"
+            type="submit"
+          >
+            View My Result →
+          </button>
+
+          <div
+            id="verifyError"
+            class="verify-error"
+          ></div>
+
+        </form>
+
+        <div class="privacy">
+          🔒 Your details are used only to verify your
+          student result.
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         3. PERFORMANCE OVERVIEW
+    ====================================================== -->
+
+    <section
+      id="overviewScreen"
+      class="screen hidden"
+    >
+
+      <div class="dashboard">
+
+        <header class="dashboard-header">
+
+          <div class="dashboard-brand">
+
+            <div class="dashboard-logo">
+              GradeCentral
+            </div>
+
+          </div>
+
+          <div class="profile-circle">
+            ◉
+          </div>
+
+        </header>
+
+
+        <div class="hero-result">
+
+          <h2>
+            Your Semester Result
+          </h2>
+
+          <p id="semesterSubtitle">
+            Semester 04 · Computer Science & Engineering
+          </p>
+
+
+          <div class="gauge">
+
+            <svg viewBox="0 0 125 125">
+
+              <circle
+                class="gauge-bg"
+                cx="62.5"
+                cy="62.5"
+                r="52"
+                stroke-dasharray="245 330"
+              />
+
+              <circle
+                id="gaugeValue"
+                class="gauge-value"
+                cx="62.5"
+                cy="62.5"
+                r="52"
+              />
+
+            </svg>
+
+            <div class="gauge-center">
+
+              <div
+                id="cgpaNumber"
+                class="gauge-number"
+              >
+                7.6
+              </div>
+
+              <div class="gauge-label">
+                CGPA
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div
+            id="cgpaChange"
+            class="cgpa-change"
+          >
+            +0.4 from your previous semester ↑
+          </div>
+
+
+          <p class="progress-message">
+            Nice progress. Your consistency is showing.
+          </p>
+
+        </div>
+
+
+        <div class="stat-grid">
+
+          <div class="stat-card">
+
+            <div class="stat-title">
+              CGPA
+            </div>
+
+            <div
+              id="statCgpa"
+              class="stat-value"
+            >
+              7.6
+            </div>
+
+            <span class="stat-change">
+              +0.4 ↑
+            </span>
+
+          </div>
+
+
+          <div class="stat-card">
+
+            <div class="stat-title">
+              SGPA
+            </div>
+
+            <div
+              id="statSgpa"
+              class="stat-value"
+            >
+              8.1
+            </div>
+
+          </div>
+
+
+          <div class="stat-card">
+
+            <div class="stat-title">
+              SUBJECTS
+            </div>
+
+            <div
+              id="statSubjects"
+              class="stat-value"
+            >
+              6 / 6
+            </div>
+
+            <span class="stat-change">
+              Cleared
+            </span>
+
+          </div>
+
+
+          <div class="stat-card">
+
+            <div class="stat-title">
+              BEST IMPROVEMENT
+            </div>
+
+            <div
+              id="statImprovement"
+              class="stat-value best"
+            >
+              +12 marks
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <button
+          class="main-button"
+          onclick="showScreen('analyticsScreen')"
+        >
+          View Detailed Analytics →
+        </button>
+
+      </div>
+
+
+      <nav class="bottom-nav">
+
+        <button
+          class="nav-item"
+          onclick="showScreen('overviewScreen')"
+        >
+          <span class="nav-icon">▦</span>
+          Dashboard
+        </button>
+
+        <button
+          class="nav-item active"
+          onclick="showScreen('overviewScreen')"
+        >
+          <span class="nav-icon">⌁</span>
+          Performance
+        </button>
+
+        <button
+          class="nav-item"
+          onclick="showScreen('insightScreen')"
+        >
+          <span class="nav-icon">✦</span>
+          Insights
+        </button>
+
+        <button class="nav-item">
+          <span class="nav-icon">♙</span>
+          Profile
+        </button>
+
+      </nav>
+
+    </section>
+
+
+    <!-- =====================================================
+         4. DETAILED ANALYTICS
+    ====================================================== -->
+
+    <section
+      id="analyticsScreen"
+      class="screen hidden"
+    >
+
+      <div class="dashboard">
+
+        <header class="dashboard-header">
+
+          <div class="dashboard-brand">
+            <div class="dashboard-logo">
+              GradeCentral
+            </div>
+          </div>
+
+          <div class="profile-circle">
+            ◉
+          </div>
+
+        </header>
+
+
+        <div class="section">
+
+          <h2 class="section-title">
+            Academic Performance
+          </h2>
+
+          <p class="small">
+            Review your current standing and historical momentum.
+          </p>
+
+        </div>
+
+
+        <div
+          id="subjectList"
+          class="section"
+        >
+
+          <!-- Filled by JavaScript -->
+
+        </div>
+
+
+        <div class="section">
+
+          <h2 class="section-title">
+            Your Progress
+          </h2>
+
+          <div class="chart-card">
+
+            <div class="chart">
+
+              <div class="chart-lines"></div>
+
+              <svg
+                class="chart-svg"
+                viewBox="0 0 360 125"
+                preserveAspectRatio="none"
+              >
+
+                <defs>
+
+                  <linearGradient
+                    id="chartGradient"
+                    x1="0"
+                    x2="0"
+                    y1="0"
+                    y2="1"
+                  >
+
+                    <stop
+                      offset="0%"
+                      stop-color="#5550e8"
+                      stop-opacity=".25"
+                    />
+
+                    <stop
+                      offset="100%"
+                      stop-color="#5550e8"
+                      stop-opacity="0"
+                    />
+
+                  </linearGradient>
+
+                </defs>
+
+
+                <path
+                  d="M20 95
+                     L105 72
+                     L190 58
+                     L280 35
+                     L350 18
+                     L350 125
+                     L20 125 Z"
+                  fill="url(#chartGradient)"
+                />
+
+
+                <polyline
+                  points="20,95 105,72 190,58 280,35 350,18"
+                  fill="none"
+                  stroke="#5550e8"
+                  stroke-width="2"
+                />
+
+
+                <circle
+                  cx="20"
+                  cy="95"
+                  r="4"
+                  fill="white"
+                  stroke="#111"
+                  stroke-width="2"
+                />
+
+                <circle
+                  cx="105"
+                  cy="72"
+                  r="4"
+                  fill="white"
+                  stroke="#111"
+                  stroke-width="2"
+                />
+
+                <circle
+                  cx="190"
+                  cy="58"
+                  r="4"
+                  fill="white"
+                  stroke="#111"
+                  stroke-width="2"
+                />
+
+                <circle
+                  cx="280"
+                  cy="35"
+                  r="4"
+                  fill="white"
+                  stroke="#111"
+                  stroke-width="2"
+                />
+
+                <circle
+                  cx="350"
+                  cy="18"
+                  r="4"
+                  fill="white"
+                  stroke="#111"
+                  stroke-width="2"
+                />
+
+              </svg>
+
+
+              <div class="chart-labels">
+
+                <span>Sem 1<br>6.8</span>
+                <span>Sem 2<br>7.1</span>
+                <span>Sem 3<br>7.3</span>
+                <span>Sem 4<br>7.6</span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="momentum">
+            ⚡ You're building momentum.
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <nav class="bottom-nav">
+
+        <button
+          class="nav-item"
+          onclick="showScreen('overviewScreen')"
+        >
+          <span class="nav-icon">▦</span>
+          Dashboard
+        </button>
+
+        <button
+          class="nav-item active"
+        >
+          <span class="nav-icon">⌁</span>
+          Performance
+        </button>
+
+        <button
+          class="nav-item"
+          onclick="showScreen('insightScreen')"
+        >
+          <span class="nav-icon">✦</span>
+          Insights
+        </button>
+
+        <button class="nav-item">
+          <span class="nav-icon">♙</span>
+          Profile
+        </button>
+
+      </nav>
+
+    </section>
+
+
+    <!-- =====================================================
+         5. PERFORMANCE INSIGHT
+    ====================================================== -->
+
+    <section
+      id="insightScreen"
+      class="screen hidden"
+    >
+
+      <div class="dashboard">
+
+        <header class="dashboard-header">
+
+          <div class="dashboard-brand">
+
+            <div class="dashboard-logo">
+              GradeCentral
+            </div>
+
+          </div>
+
+          <div class="profile-circle">
+            ◉
+          </div>
+
+        </header>
+
+
+        <div class="section">
+
+          <h2 class="section-title">
+            Your Performance Insight
+          </h2>
+
+          <p class="small">
+            A personalized look at your recent progress
+            and areas for growth.
+          </p>
+
+        </div>
+
+
+        <div class="insight-card">
+
+          <div class="insight-heading">
+
+            <div class="insight-icon">
+              ✦
+            </div>
+
+            Recent Shifts
+
+          </div>
+
+          <p id="recentShift">
+
+            Your strongest improvement came from
+            Data Structures (+8). Mathematics decreased
+            by 4 marks, making it your biggest opportunity
+            for improvement.
+
+          </p>
+
+          <div class="tag-row">
+
+            <span class="tag green">
+              ↑ Data Structures
+            </span>
+
+            <span class="tag red">
+              ↓ Mathematics
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <h2 class="section-title">
+          Your next opportunity
+        </h2>
+
+
+        <div
+          id="opportunityCard"
+          class="opportunity"
+        >
+
+          <div>
+
+            <h3>
+              Mathematics
+            </h3>
+
+            <p>
+              Focus on problem solving. Practice
+              3–5 problems regularly and review
+              your mistakes.
+            </p>
+
+            <button class="resource-button">
+              View Resources
+            </button>
+
+          </div>
+
+          <div class="arrow">
+            →
+          </div>
+
+        </div>
+
+
+        <div class="milestone">
+
+          <div class="milestone-top">
+
+            <div>
+              Next Milestone
+              <small>
+                TARGET 8.0 CGPA
+              </small>
+            </div>
+
+            <div>
+              0.4 to go
+            </div>
+
+          </div>
+
+          <div class="progress-bar">
+
+            <div class="progress-fill"></div>
+
+          </div>
+
+          <small>
+            You are currently at 7.6. Consistent performance
+            will help bridge this gap.
+          </small>
+
+        </div>
+
+      </div>
+
+
+      <nav class="bottom-nav">
+
+        <button
+          class="nav-item"
+          onclick="showScreen('overviewScreen')"
+        >
+          <span class="nav-icon">▦</span>
+          Dashboard
+        </button>
+
+        <button
+          class="nav-item"
+          onclick="showScreen('analyticsScreen')"
+        >
+          <span class="nav-icon">⌁</span>
+          Performance
+        </button>
+
+        <button
+          class="nav-item active"
+        >
+          <span class="nav-icon">✦</span>
+          Insights
+        </button>
+
+        <button class="nav-item">
+          <span class="nav-icon">♙</span>
+          Profile
+        </button>
+
+      </nav>
+
+    </section>
+
+  </div>
+
+</div>
+
+
+<script>
+
+/* ============================================================
+   BACKEND
+   ============================================================
+
+   Your Google Sheet is NOT accessed directly here.
+
+   Browser
+      ↓
+   Express API
+      ↓
+   Google Sheets API
+      ↓
+   Student data
+
+   ============================================================ */
+
+const API_URL =
+  window.location.hostname === "localhost"
+    ? "http://localhost:8787/api/result/verify"
+    : "/api/result/verify";
+
+
+/* ============================================================
+   SCREEN MANAGEMENT
+   ============================================================ */
+
+function showScreen(id) {
+
+  document
+    .querySelectorAll(".screen")
+    .forEach(screen => {
+      screen.classList.add("hidden");
+    });
+
+  const screen =
+    document.getElementById(id);
+
+  if (screen) {
+    screen.classList.remove("hidden");
+
+    const scroll =
+      screen.querySelector(".screen");
+
+    screen.scrollTop = 0;
+  }
+
+}
+
+
+/* ============================================================
+   START
+   ============================================================ */
+
+setTimeout(() => {
+
+  showScreen("verificationScreen");
+
+}, 2200);
+
+
+/* ============================================================
+   FORM
+   ============================================================ */
+
+const form =
+  document.getElementById("resultForm");
+
+form.addEventListener(
+  "submit",
+  async function(event) {
+
+    event.preventDefault();
+
+    const regNo =
+      document
+        .getElementById("regNo")
+        .value
+        .trim();
+
+    const dob =
+      document
+        .getElementById("dob")
+        .value;
+
+    const button =
+      document.getElementById("verifyButton");
+
+    const error =
+      document.getElementById("verifyError");
+
+
+    error.style.display = "none";
+
+    button.disabled = true;
+
+    button.textContent =
+      "Verifying...";
+
+
+    try {
+
+      const response =
+        await fetch(API_URL, {
+
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json"
+          },
+
+          body: JSON.stringify({
+
+            registrationNumber: regNo,
+
+            dob: dob
+
+          })
+
+        });
+
+
+      const data =
+        await response.json();
+
+
+      if (!response.ok) {
+
+        throw new Error(
+          data.message ||
+          "Invalid registration number or date of birth."
+        );
+
+      }
+
+
+      /*
+       * Backend response:
+       *
+       * {
+       *   student: {...},
+       *   analysis: {...}
+       * }
+       */
+
+      loadStudentResult(data);
+
+      showScreen("overviewScreen");
+
+
+    } catch (err) {
+
+      error.textContent =
+        err.message ||
+        "Unable to connect to the result server.";
+
+      error.style.display =
+        "block";
+
+    } finally {
+
+      button.disabled = false;
+
+      button.textContent =
+        "View My Result →";
+
+    }
+
+  }
+);
+
+
+/* ============================================================
+   LOAD RESULT
+   ============================================================ */
+
+function loadStudentResult(data) {
+
+  const student =
+    data.student ||
+    data.result ||
+    data;
+
+  const analysis =
+    data.analysis ||
+    {};
+
+
+  /* CGPA */
+
+  const cgpa =
+    Number(
+      student.cgpa ??
+      analysis.currentCGPA ??
+      7.6
+    );
+
+  document
+    .getElementById("cgpaNumber")
+    .textContent =
+      cgpa.toFixed(1);
+
+  document
+    .getElementById("statCgpa")
+    .textContent =
+      cgpa.toFixed(1);
+
+
+  /* SGPA */
+
+  document
+    .getElementById("statSgpa")
+    .textContent =
+      student.sgpa ??
+      analysis.sgpa ??
+      "8.1";
+
+
+  /* Semester */
+
+  const semester =
+    student.semester ??
+    analysis.semester ??
+    4;
+
+  document
+    .getElementById("semesterSubtitle")
+    .textContent =
+      `Semester ${semester} · ${
+        student.department ||
+        "Computer Science & Engineering"
+      }`;
+
+
+  /* Subjects */
+
+  const subjects =
+    analysis.subjects ||
+    student.subjects ||
+    [];
+
+  document
+    .getElementById("statSubjects")
+    .textContent =
+      `${subjects.length || 6} / ${subjects.length || 6}`;
+
+
+  renderSubjects(subjects);
+
+
+  /* Improvement */
+
+  let bestImprovement = 12;
+
+  if (subjects.length) {
+
+    const improvements =
+      subjects.map(subject => {
+
+        const previous =
+          Number(
+            subject.previous ??
+            subject.previousMark ??
+            0
+          );
+
+        const current =
+          Number(
+            subject.current ??
+            subject.currentMark ??
+            subject.mark ??
+            0
+          );
+
+        return current - previous;
+
+      });
+
+    bestImprovement =
+      Math.max(...improvements);
+
+  }
+
+  document
+    .getElementById("statImprovement")
+    .textContent =
+      `+${bestImprovement} marks`;
+
+
+  /* CGPA change */
+
+  const change =
+    Number(
+      analysis.cgpaChange ??
+      0.4
+    );
+
+  document
+    .getElementById("cgpaChange")
+    .textContent =
+      `${change >= 0 ? "+" : ""}${change.toFixed(1)}
+       from your previous semester ↑`;
+
+
+  /* Insight */
+
+  if (analysis.recentShift) {
+
+    document
+      .getElementById("recentShift")
+      .textContent =
+        analysis.recentShift;
+
+  }
+
+}
+
+
+/* ============================================================
+   SUBJECTS
+   ============================================================ */
+
+function renderSubjects(subjects) {
+
+  const container =
+    document.getElementById("subjectList");
+
+  container.innerHTML = "";
+
+
+  /* Demo display if backend has no subjects */
+
+  if (!subjects.length) {
+
+    subjects = [
+
+      {
+        name: "Data Structures",
+        type: "Core Concept",
+        previous: 74,
+        current: 82,
+        grade: "A"
+      },
+
+      {
+        name: "OOPS",
+        type: "Core Concept",
+        previous: 80,
+        current: 88,
+        grade: "A"
+      },
+
+      {
+        name: "Computer Networks",
+        type: "Applied Theory",
+        previous: 73,
+        current: 76,
+        grade: "A"
+      },
+
+      {
+        name: "Mathematics",
+        type: "Foundation",
+        previous: 65,
+        current: 61,
+        grade: "B"
+      }
+
+    ];
+
+  }
+
+
+  subjects.forEach(subject => {
+
+    const previous =
+      Number(
+        subject.previous ??
+        subject.previousMark ??
+        0
+      );
+
+    const current =
+      Number(
+        subject.current ??
+        subject.currentMark ??
+        subject.mark ??
+        0
+      );
+
+    const change =
+      current - previous;
+
+
+    const div =
+      document.createElement("div");
+
+    div.className =
+      "subject-card";
+
+
+    div.innerHTML = `
+
+      <div>
+
+        <div class="subject-name">
+          ${escapeHtml(
+            subject.name ||
+            subject.subject ||
+            "Subject"
+          )}
+        </div>
+
+        <div class="subject-type">
+          ${escapeHtml(
+            subject.type ||
+            "Academic Subject"
+          )}
+        </div>
+
+      </div>
+
+
+      <div class="subject-score">
+
+        <span class="grade">
+          Grade
+          <strong>
+            ${escapeHtml(
+              subject.grade ||
+              calculateGrade(current)
+            )}
+          </strong>
+        </span>
+
+        <span class="score">
+          ${current}
+        </span>
+
+        <span class="${
+          change >= 0
+            ? "up"
+            : "down"
+        }">
+
+          ${
+            change >= 0
+              ? "↑"
+              : "↓"
+          }
+
+        </span>
+
+      </div>
+
+    `;
+
+
+    container.appendChild(div);
+
+  });
+
+}
+
+
+/* ============================================================
+   GRADE
+   ============================================================ */
+
+function calculateGrade(mark) {
+
+  if (mark >= 90) return "O";
+
+  if (mark >= 80) return "A+";
+
+  if (mark >= 70) return "A";
+
+  if (mark >= 60) return "B+";
+
+  if (mark >= 50) return "B";
+
+  if (mark >= 40) return "C";
+
+  return "F";
+
+}
+
+
+/* ============================================================
+   HTML SECURITY
+   ============================================================ */
+
+function escapeHtml(value) {
+
+  return String(value)
+
+    .replaceAll("&", "&amp;")
+
+    .replaceAll("<", "&lt;")
+
+    .replaceAll(">", "&gt;")
+
+    .replaceAll('"', "&quot;")
+
+    .replaceAll("'", "&#039;");
+
+}
+
+</script>
+
+</body>
+</html>
