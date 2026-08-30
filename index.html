@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Student Result Portal</title>
 
   <meta
     name="description"
-    content="Secure Student Result Portal"
-  />
+    content="Student Result Portal - Secure Academic Result Verification"
+  >
 
   <style>
     * {
@@ -29,16 +29,17 @@
         sans-serif;
 
       min-height: 100vh;
+
       background:
         radial-gradient(
-          circle at top left,
-          #e0f2fe 0,
-          transparent 35%
+          circle at 10% 10%,
+          #dbeafe 0,
+          transparent 32%
         ),
         radial-gradient(
-          circle at bottom right,
+          circle at 90% 90%,
           #ede9fe 0,
-          transparent 35%
+          transparent 32%
         ),
         #f8fafc;
 
@@ -52,16 +53,18 @@
 
     .page {
       min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 30px 16px;
+      padding: 35px 16px;
     }
 
     .container {
       width: 100%;
-      max-width: 1100px;
+      max-width: 1050px;
+      margin: auto;
     }
+
+    /* =========================
+       BRAND
+       ========================= */
 
     .brand {
       text-align: center;
@@ -69,24 +72,30 @@
     }
 
     .logo {
-      width: 58px;
-      height: 58px;
+      width: 62px;
+      height: 62px;
       margin: auto;
-      border-radius: 18px;
+
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
+
+      border-radius: 18px;
+
       background: #0f172a;
       color: white;
-      font-size: 25px;
+
+      font-size: 26px;
       font-weight: 800;
-      box-shadow: 0 15px 35px rgba(15, 23, 42, 0.18);
+
+      box-shadow:
+        0 18px 40px rgba(15, 23, 42, 0.18);
     }
 
     .brand h1 {
       margin-top: 15px;
       font-size: 30px;
-      letter-spacing: -0.8px;
+      letter-spacing: -1px;
     }
 
     .brand p {
@@ -95,14 +104,22 @@
       font-size: 14px;
     }
 
+    /* =========================
+       LOGIN CARD
+       ========================= */
+
     .card {
       width: 100%;
       max-width: 500px;
       margin: auto;
-      background: rgba(255, 255, 255, 0.94);
-      border: 1px solid #e2e8f0;
-      border-radius: 25px;
+
       padding: 32px;
+
+      background: rgba(255, 255, 255, 0.96);
+
+      border: 1px solid #e2e8f0;
+      border-radius: 24px;
+
       box-shadow:
         0 25px 70px rgba(15, 23, 42, 0.10);
     }
@@ -115,8 +132,8 @@
     .subtitle {
       color: #64748b;
       font-size: 14px;
+      line-height: 1.55;
       margin-bottom: 25px;
-      line-height: 1.5;
     }
 
     .field {
@@ -126,25 +143,33 @@
     .field label {
       display: block;
       margin-bottom: 8px;
+
       font-size: 13px;
       font-weight: 700;
+
       color: #334155;
     }
 
     .field input {
       width: 100%;
       height: 52px;
+
+      padding: 0 15px;
+
       border: 1px solid #cbd5e1;
       border-radius: 13px;
-      padding: 0 15px;
+
       outline: none;
+
       background: white;
       color: #0f172a;
+
       transition: 0.2s;
     }
 
     .field input:focus {
       border-color: #6366f1;
+
       box-shadow:
         0 0 0 4px rgba(99, 102, 241, 0.10);
     }
@@ -152,18 +177,23 @@
     .btn {
       width: 100%;
       height: 53px;
-      border: 0;
+
+      border: none;
       border-radius: 13px;
+
       background: #0f172a;
       color: white;
+
       font-weight: 750;
+
       cursor: pointer;
+
       transition: 0.2s;
     }
 
     .btn:hover {
-      transform: translateY(-1px);
       background: #1e293b;
+      transform: translateY(-1px);
     }
 
     .btn:disabled {
@@ -172,179 +202,33 @@
       transform: none;
     }
 
-    .message {
-      display: none;
-      margin-top: 16px;
-      padding: 13px 14px;
-      border-radius: 12px;
-      font-size: 13px;
-      line-height: 1.5;
-    }
-
-    .message.error {
-      display: block;
-      background: #fef2f2;
-      color: #b91c1c;
-      border: 1px solid #fecaca;
-    }
-
-    .message.success {
-      display: block;
-      background: #f0fdf4;
-      color: #15803d;
-      border: 1px solid #bbf7d0;
-    }
-
-    /* ==============================
-       RESULT
-       ============================== */
-
-    #resultSection {
-      display: none;
-    }
-
-    .result-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 15px;
-      margin-bottom: 20px;
-    }
-
-    .student-name {
-      font-size: 25px;
-      font-weight: 800;
-    }
-
-    .student-meta {
-      color: #64748b;
-      font-size: 13px;
-      margin-top: 5px;
-    }
-
-    .logout {
-      border: 1px solid #cbd5e1;
-      background: white;
-      border-radius: 11px;
-      padding: 10px 14px;
-      cursor: pointer;
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    .hero {
-      background: #0f172a;
-      color: white;
-      border-radius: 23px;
-      padding: 27px;
-      margin-bottom: 18px;
-    }
-
-    .hero-label {
-      font-size: 13px;
-      opacity: 0.7;
-    }
-
-    .cgpa {
-      font-size: 52px;
-      font-weight: 850;
-      margin-top: 5px;
-      letter-spacing: -2px;
-    }
-
-    .hero-small {
-      margin-top: 5px;
-      font-size: 13px;
-      opacity: 0.75;
-    }
-
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 13px;
-      margin-bottom: 18px;
-    }
-
-    .stat {
-      background: white;
-      border: 1px solid #e2e8f0;
-      border-radius: 17px;
-      padding: 18px;
-    }
-
-    .stat-label {
-      color: #64748b;
-      font-size: 12px;
-    }
-
-    .stat-value {
-      font-size: 20px;
-      font-weight: 800;
-      margin-top: 6px;
-    }
-
-    .section {
-      background: white;
-      border: 1px solid #e2e8f0;
-      border-radius: 20px;
-      padding: 22px;
-      margin-bottom: 17px;
-    }
-
-    .section h3 {
-      font-size: 17px;
-      margin-bottom: 16px;
-    }
-
-    .subject {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      padding: 13px 0;
-      border-bottom: 1px solid #f1f5f9;
-    }
-
-    .subject:last-child {
-      border-bottom: 0;
-    }
-
-    .subject-name {
-      font-weight: 650;
-      font-size: 14px;
-    }
-
-    .subject-mark {
-      font-weight: 800;
-      font-size: 15px;
-    }
-
-    .recommendation {
-      padding: 12px 14px;
-      background: #f8fafc;
-      border-radius: 12px;
-      margin-bottom: 9px;
-      color: #475569;
-      font-size: 13px;
-      line-height: 1.5;
-    }
+    /* =========================
+       LOADING
+       ========================= */
 
     .loading {
       display: none;
+
       align-items: center;
       justify-content: center;
+
       gap: 9px;
+
       margin-top: 15px;
+
       color: #64748b;
       font-size: 13px;
     }
 
     .spinner {
-      width: 17px;
-      height: 17px;
+      width: 18px;
+      height: 18px;
+
       border-radius: 50%;
+
       border: 2px solid #cbd5e1;
       border-top-color: #0f172a;
+
       animation: spin 0.8s linear infinite;
     }
 
@@ -354,14 +238,254 @@
       }
     }
 
+    /* =========================
+       MESSAGE
+       ========================= */
+
+    .message {
+      display: none;
+
+      margin-top: 16px;
+
+      padding: 13px 14px;
+
+      border-radius: 12px;
+
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .message.error {
+      display: block;
+
+      background: #fef2f2;
+      color: #b91c1c;
+
+      border: 1px solid #fecaca;
+    }
+
+    .message.success {
+      display: block;
+
+      background: #f0fdf4;
+      color: #15803d;
+
+      border: 1px solid #bbf7d0;
+    }
+
+    /* =========================
+       RESULT
+       ========================= */
+
+    #resultSection {
+      display: none;
+    }
+
+    .result-header {
+      display: flex;
+
+      justify-content: space-between;
+      align-items: center;
+
+      gap: 15px;
+
+      margin-bottom: 20px;
+    }
+
+    .student-name {
+      font-size: 27px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .student-meta {
+      margin-top: 5px;
+
+      color: #64748b;
+
+      font-size: 13px;
+    }
+
+    .logout {
+      border: 1px solid #cbd5e1;
+
+      background: white;
+
+      border-radius: 11px;
+
+      padding: 10px 15px;
+
+      cursor: pointer;
+
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    /* =========================
+       CGPA HERO
+       ========================= */
+
+    .hero {
+      background: #0f172a;
+      color: white;
+
+      border-radius: 23px;
+
+      padding: 28px;
+
+      margin-bottom: 18px;
+    }
+
+    .hero-label {
+      font-size: 13px;
+      opacity: 0.7;
+    }
+
+    .cgpa {
+      margin-top: 5px;
+
+      font-size: 54px;
+      font-weight: 850;
+
+      letter-spacing: -2px;
+    }
+
+    .hero-small {
+      margin-top: 5px;
+
+      font-size: 13px;
+      opacity: 0.75;
+    }
+
+    /* =========================
+       STATS
+       ========================= */
+
+    .stats {
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
+      gap: 13px;
+
+      margin-bottom: 18px;
+    }
+
+    .stat {
+      background: white;
+
+      border: 1px solid #e2e8f0;
+
+      border-radius: 17px;
+
+      padding: 18px;
+    }
+
+    .stat-label {
+      color: #64748b;
+      font-size: 12px;
+    }
+
+    .stat-value {
+      margin-top: 6px;
+
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    /* =========================
+       SECTION
+       ========================= */
+
+    .section {
+      background: white;
+
+      border: 1px solid #e2e8f0;
+
+      border-radius: 20px;
+
+      padding: 22px;
+
+      margin-bottom: 17px;
+    }
+
+    .section h3 {
+      font-size: 17px;
+      margin-bottom: 16px;
+    }
+
+    /* =========================
+       SUBJECT
+       ========================= */
+
+    .subject {
+      display: flex;
+
+      justify-content: space-between;
+      align-items: center;
+
+      gap: 12px;
+
+      padding: 14px 0;
+
+      border-bottom:
+        1px solid #f1f5f9;
+    }
+
+    .subject:last-child {
+      border-bottom: none;
+    }
+
+    .subject-name {
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .subject-mark {
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    /* =========================
+       RECOMMENDATION
+       ========================= */
+
+    .recommendation {
+      padding: 13px 14px;
+
+      background: #f8fafc;
+
+      border-radius: 12px;
+
+      margin-bottom: 9px;
+
+      color: #475569;
+
+      font-size: 13px;
+
+      line-height: 1.5;
+    }
+
     .footer {
       text-align: center;
+
       margin-top: 20px;
+
       color: #94a3b8;
+
       font-size: 11px;
     }
 
+    /* =========================
+       MOBILE
+       ========================= */
+
     @media (max-width: 650px) {
+
+      .page {
+        padding: 25px 13px;
+      }
 
       .card {
         padding: 23px;
@@ -389,1050 +513,1062 @@
 
 <body>
 
-  <div class="page">
+<div class="page">
 
-    <div class="container">
+  <div class="container">
 
-      <!-- ==============================
-           LOGIN
-           ============================== -->
+    <!-- =====================================================
+         LOGIN
+         ===================================================== -->
 
-      <div id="loginSection">
+    <div id="loginSection">
 
-        <div class="brand">
-          <div class="logo">S</div>
+      <div class="brand">
 
-          <h1>Student Result Portal</h1>
-
-          <p>
-            Secure academic result verification
-          </p>
+        <div class="logo">
+          S
         </div>
 
-        <div class="card">
+        <h1>
+          Student Result Portal
+        </h1>
 
-          <h2>View Your Result</h2>
+        <p>
+          Secure academic result verification
+        </p>
 
-          <p class="subtitle">
-            Enter your Registration Number and Date
-            of Birth to securely access your result.
-          </p>
+      </div>
 
-          <form id="resultForm">
 
-            <div class="field">
+      <div class="card">
 
-              <label for="regNo">
-                Registration Number
-              </label>
+        <h2>
+          View Your Result
+        </h2>
 
-              <input
-                id="regNo"
-                type="text"
-                placeholder="Enter registration number"
-                autocomplete="off"
-                required
-              />
+        <p class="subtitle">
+          Enter your Registration Number and Date
+          of Birth to securely access your academic result.
+        </p>
 
-            </div>
 
-            <div class="field">
+        <form id="resultForm">
 
-              <label for="dob">
-                Date of Birth
-              </label>
+          <div class="field">
 
-              <input
-                id="dob"
-                type="date"
-                required
-              />
+            <label for="regNo">
+              Registration Number
+            </label>
 
-            </div>
-
-            <button
-              class="btn"
-              id="submitBtn"
-              type="submit"
+            <input
+              id="regNo"
+              type="text"
+              placeholder="Enter registration number"
+              autocomplete="off"
+              required
             >
-              View My Result
-            </button>
 
-          </form>
+          </div>
+
+
+          <div class="field">
+
+            <label for="dob">
+              Date of Birth
+            </label>
+
+            <input
+              id="dob"
+              type="date"
+              required
+            >
+
+          </div>
+
+
+          <button
+            id="submitBtn"
+            class="btn"
+            type="submit"
+          >
+            View My Result
+          </button>
+
+        </form>
+
+
+        <div
+          id="loading"
+          class="loading"
+        >
+
+          <span class="spinner"></span>
+
+          <span>
+            Verifying your details...
+          </span>
+
+        </div>
+
+
+        <div
+          id="message"
+          class="message"
+        ></div>
+
+      </div>
+
+
+      <div class="footer">
+        Student Result Portal
+      </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         RESULT
+         ===================================================== -->
+
+    <div id="resultSection">
+
+      <div class="result-header">
+
+        <div>
 
           <div
-            class="loading"
-            id="loading"
+            id="studentName"
+            class="student-name"
           >
-            <span class="spinner"></span>
-            Verifying your details...
+            Student
           </div>
 
           <div
-            class="message"
-            id="message"
-          ></div>
+            id="studentMeta"
+            class="student-meta"
+          >
+            --
+          </div>
 
         </div>
 
-        <div class="footer">
-          Student Result Portal
+
+        <button
+          class="logout"
+          type="button"
+          onclick="logout()"
+        >
+          Back
+        </button>
+
+      </div>
+
+
+      <!-- CGPA -->
+
+      <div class="hero">
+
+        <div class="hero-label">
+          Current CGPA
+        </div>
+
+        <div
+          id="cgpa"
+          class="cgpa"
+        >
+          0.00
+        </div>
+
+        <div
+          id="trend"
+          class="hero-small"
+        >
+          Current semester performance
         </div>
 
       </div>
 
 
-      <!-- ==============================
-           RESULT
-           ============================== -->
+      <!-- STATS -->
 
-      <div id="resultSection">
+      <div class="stats">
 
-        <div class="result-header">
+        <div class="stat">
 
-          <div>
-
-            <div
-              class="student-name"
-              id="studentName"
-            >
-              Student
-            </div>
-
-            <div
-              class="student-meta"
-              id="studentMeta"
-            >
-              --
-            </div>
-
-          </div>
-
-          <button
-            class="logout"
-            onclick="logout()"
-          >
-            Back
-          </button>
-
-        </div>
-
-
-        <div class="hero">
-
-          <div class="hero-label">
-            Current CGPA
+          <div class="stat-label">
+            Semester
           </div>
 
           <div
-            class="cgpa"
-            id="cgpa"
+            id="semester"
+            class="stat-value"
           >
-            0.00
+            --
+          </div>
+
+        </div>
+
+
+        <div class="stat">
+
+          <div class="stat-label">
+            SGPA
           </div>
 
           <div
-            class="hero-small"
-            id="trend"
+            id="sgpa"
+            class="stat-value"
           >
-            Current semester performance
+            --
           </div>
 
         </div>
 
 
-        <div class="stats">
+        <div class="stat">
 
-          <div class="stat">
-
-            <div class="stat-label">
-              Semester
-            </div>
-
-            <div
-              class="stat-value"
-              id="semester"
-            >
-              --
-            </div>
-
+          <div class="stat-label">
+            CGPA Change
           </div>
 
-
-          <div class="stat">
-
-            <div class="stat-label">
-              SGPA
-            </div>
-
-            <div
-              class="stat-value"
-              id="sgpa"
-            >
-              --
-            </div>
-
-          </div>
-
-
-          <div class="stat">
-
-            <div class="stat-label">
-              CGPA Change
-            </div>
-
-            <div
-              class="stat-value"
-              id="cgpaChange"
-            >
-              --
-            </div>
-
+          <div
+            id="cgpaChange"
+            class="stat-value"
+          >
+            --
           </div>
 
         </div>
 
-
-        <!-- SUBJECT PERFORMANCE -->
-
-        <div class="section">
-
-          <h3>
-            Subject Performance
-          </h3>
-
-          <div id="subjects">
-          </div>
-
-        </div>
+      </div>
 
 
-        <!-- INSIGHTS -->
+      <!-- SUBJECT PERFORMANCE -->
 
-        <div class="section">
+      <div class="section">
 
-          <h3>
-            Insights
-          </h3>
+        <h3>
+          Subject Performance
+        </h3>
 
-          <div id="insights">
-          </div>
+        <div id="subjects"></div>
 
-        </div>
+      </div>
 
 
-        <!-- IMPROVEMENT -->
+      <!-- INSIGHTS -->
 
-        <div class="section">
+      <div class="section">
 
-          <h3>
-            Improvement Recommendations
-          </h3>
+        <h3>
+          Insights
+        </h3>
 
-          <div id="recommendations">
-          </div>
+        <div id="insights"></div>
 
-        </div>
+      </div>
 
-        <div class="footer">
-          Student Result Portal
-        </div>
 
+      <!-- RECOMMENDATIONS -->
+
+      <div class="section">
+
+        <h3>
+          Improvement Recommendations
+        </h3>
+
+        <div id="recommendations"></div>
+
+      </div>
+
+
+      <div class="footer">
+        Student Result Portal
       </div>
 
     </div>
 
   </div>
 
-
-  <script>
-
-    /*
-    ============================================================
-    ONLY CHANGE THIS URL
-    ============================================================
-
-    Paste your Google Apps Script WEB APP /exec URL here.
-
-    Example:
-
-    const API_URL =
-      "https://script.google.com/macros/s/XXXXXXXX/exec";
-
-    DO NOT paste the Figma URL here.
-    ============================================================
-    */
-
-    const API_URL =
-      "https://script.google.com/macros/s/AKfycby2apetR21pYdTSCxXWevHp41oet-v76mBQ3Mit_JUVuBQ-nXEJvFD_0kVFpza41TdNOg/exec";
+</div>
 
 
-    /* ========================================================
-       ELEMENTS
-       ======================================================== */
+<script>
 
-    const form =
-      document.getElementById("resultForm");
+/* ============================================================
+   GOOGLE APPS SCRIPT URL
+   ============================================================
 
-    const regNoInput =
-      document.getElementById("regNo");
+   YOUR URL IS ALREADY ADDED.
 
-    const dobInput =
-      document.getElementById("dob");
+   Do NOT remove the quotation marks.
+   Do NOT add the Figma URL here.
 
-    const submitBtn =
-      document.getElementById("submitBtn");
+   ============================================================ */
 
-    const loading =
-      document.getElementById("loading");
-
-    const message =
-      document.getElementById("message");
-
-    const loginSection =
-      document.getElementById("loginSection");
-
-    const resultSection =
-      document.getElementById("resultSection");
+const API_URL =
+  "https://script.google.com/macros/s/AKfycby2apetR21pYdTSCxXWevHp41oet-v76mBQ3Mit_JUVuBQ-nXEJvFD_0kVFpza41TdNOg/exec";
 
 
-    /* ========================================================
-       FORM SUBMIT
-       ======================================================== */
+/* ============================================================
+   ELEMENTS
+   ============================================================ */
 
-    form.addEventListener(
-      "submit",
-      async function(event) {
+const form =
+  document.getElementById("resultForm");
 
-        event.preventDefault();
+const regNoInput =
+  document.getElementById("regNo");
 
-        clearMessage();
+const dobInput =
+  document.getElementById("dob");
 
-        const regNo =
-          regNoInput.value
-            .trim()
-            .toUpperCase();
+const submitBtn =
+  document.getElementById("submitBtn");
 
-        const dob =
-          dobInput.value.trim();
+const loading =
+  document.getElementById("loading");
 
+const message =
+  document.getElementById("message");
 
-        if (!regNo || !dob) {
+const loginSection =
+  document.getElementById("loginSection");
 
-          showMessage(
-            "Please enter your Registration Number and Date of Birth.",
-            "error"
-          );
-
-          return;
-
-        }
+const resultSection =
+  document.getElementById("resultSection");
 
 
-        if (
-          API_URL ===
-          "YOUR_APPS_SCRIPT_EXEC_URL_HERE"
-        ) {
+/* ============================================================
+   FORM SUBMIT
+   ============================================================ */
 
-          showMessage(
-            "Google Apps Script URL has not been added yet.",
-            "error"
-          );
+form.addEventListener(
+  "submit",
+  async function(event) {
 
-          return;
+    event.preventDefault();
 
-        }
+    clearMessage();
 
 
-        setLoading(true);
+    const regNo =
+      regNoInput.value
+        .trim()
+        .toUpperCase();
 
 
-        try {
-
-          /*
-          ======================================================
-          POST REQUEST
-          ======================================================
-          */
-
-const url =
-  API_URL +
-  "?registrationNumber=" +
-  encodeURIComponent(regNo) +
-  "&dob=" +
-  encodeURIComponent(dob);
-
-console.log("Request URL:", url);
-
-const response = await fetch(url);
-
-if (!response.ok) {
-  throw new Error(
-    "Server error: " + response.status
-  );
-}
-
-const data = await response.json();
-
-console.log("API RESPONSE:", data);
+    const dob =
+      dobInput.value.trim();
 
 
-          if (!response.ok) {
+    if (!regNo || !dob) {
 
-            throw new Error(
-              "Server returned HTTP " +
-              response.status
-            );
+      showMessage(
+        "Please enter Registration Number and Date of Birth.",
+        "error"
+      );
+
+      return;
+    }
+
+
+    setLoading(true);
+
+
+    try {
+
+      /*
+       * IMPORTANT:
+       * Apps Script doPost(e) receives this JSON.
+       *
+       * text/plain is intentional.
+       * It avoids the browser sending a CORS preflight
+       * request to Google Apps Script.
+       */
+
+      const requestBody =
+        JSON.stringify({
+
+          registrationNumber:
+            regNo,
+
+          dob:
+            dob
+
+        });
+
+
+      console.log(
+        "Sending request:",
+        requestBody
+      );
+
+
+      const response =
+        await fetch(
+          API_URL,
+          {
+
+            method: "POST",
+
+            headers: {
+              "Content-Type":
+                "text/plain;charset=utf-8"
+            },
+
+            body:
+              requestBody
 
           }
+        );
 
 
-          const data =
-            await response.json();
+      console.log(
+        "HTTP status:",
+        response.status
+      );
 
 
-          console.log(
-            "Student Result API:",
-            data
-          );
+      if (!response.ok) {
 
-
-          if (!data.success) {
-
-            throw new Error(
-              data.message ||
-              "Student information not found."
-            );
-
-          }
-
-
-          /*
-          ======================================================
-          DISPLAY RESULT
-          ======================================================
-          */
-
-          displayResult(data);
-
-
-        } catch (error) {
-
-          console.error(
-            "Result Error:",
-            error
-          );
-
-
-          showMessage(
-            error.message ||
-            "Unable to connect to the result server.",
-            "error"
-          );
-
-
-        } finally {
-
-          setLoading(false);
-
-        }
+        throw new Error(
+          "Server returned HTTP " +
+          response.status
+        );
 
       }
+
+
+      const data =
+        await response.json();
+
+
+      console.log(
+        "Student Result API:",
+        data
+      );
+
+
+      if (!data.success) {
+
+        throw new Error(
+          data.message ||
+          "Invalid Registration Number or Date of Birth."
+        );
+
+      }
+
+
+      if (!data.student) {
+
+        throw new Error(
+          "Student information was not returned by the server."
+        );
+
+      }
+
+
+      displayResult(data);
+
+    }
+
+    catch (error) {
+
+      console.error(
+        "RESULT ERROR:",
+        error
+      );
+
+
+      showMessage(
+        error.message ||
+        "Unable to connect to the Student Result server.",
+        "error"
+      );
+
+    }
+
+    finally {
+
+      setLoading(false);
+
+    }
+
+  }
+);
+
+
+/* ============================================================
+   DISPLAY RESULT
+   ============================================================ */
+
+function displayResult(data) {
+
+  const student =
+    data.student || {};
+
+  const analysis =
+    data.analysis || {};
+
+
+  /* NAME */
+
+  document.getElementById(
+    "studentName"
+  ).textContent =
+    student.name ||
+    "Student";
+
+
+  /* META */
+
+  const meta = [
+
+    student.registrationNumber ||
+      "",
+
+    student.department ||
+      "",
+
+    student.semester
+      ? "Semester " +
+        student.semester
+      : ""
+
+  ]
+  .filter(Boolean)
+  .join(" • ");
+
+
+  document.getElementById(
+    "studentMeta"
+  ).textContent =
+    meta || "--";
+
+
+  /* CGPA */
+
+  const cgpa =
+    Number(
+      student.cgpa ??
+      analysis.currentCGPA ??
+      0
     );
 
 
-    /* ========================================================
-       DISPLAY RESULT
-       ======================================================== */
-
-    function displayResult(data) {
-
-      const student =
-        data.student || {};
-
-      const analysis =
-        data.analysis || {};
+  document.getElementById(
+    "cgpa"
+  ).textContent =
+    Number.isFinite(cgpa)
+      ? cgpa.toFixed(2)
+      : "0.00";
 
 
-      /*
-      Student name
-      */
+  /* SGPA */
 
-      document.getElementById(
-        "studentName"
-      ).textContent =
-        student.name ||
-        "Student";
-
-
-      /*
-      Student metadata
-      */
-
-      document.getElementById(
-        "studentMeta"
-      ).textContent =
-        [
-          student.registrationNumber ||
-          "",
-
-          student.department ||
-          "",
-
-          student.semester
-            ? "Semester " + student.semester
-            : ""
-        ]
-        .filter(Boolean)
-        .join(" • ");
+  const sgpa =
+    Number(
+      student.sgpa ??
+      analysis.sgpa ??
+      0
+    );
 
 
-      /*
-      CGPA
-      */
+  document.getElementById(
+    "sgpa"
+  ).textContent =
+    Number.isFinite(sgpa)
+      ? sgpa.toFixed(2)
+      : "0.00";
 
-      const cgpa =
+
+  /* SEMESTER */
+
+  document.getElementById(
+    "semester"
+  ).textContent =
+    student.semester ||
+    "--";
+
+
+  /* CGPA CHANGE */
+
+  const change =
+    Number(
+      analysis.cgpaChange ||
+      0
+    );
+
+
+  document.getElementById(
+    "cgpaChange"
+  ).textContent =
+    Number.isFinite(change)
+      ? (
+          change > 0
+            ? "+" + change.toFixed(2)
+            : change.toFixed(2)
+        )
+      : "0.00";
+
+
+  /* TREND */
+
+  document.getElementById(
+    "trend"
+  ).textContent =
+    analysis.overallTrend ||
+    "Current semester performance";
+
+
+  /* SUBJECTS */
+
+  const subjects =
+    student.subjects ||
+    analysis.subjects ||
+    [];
+
+
+  renderSubjects(subjects);
+
+
+  /* RECOMMENDATIONS */
+
+  renderRecommendations(
+    analysis.recommendations ||
+    []
+  );
+
+
+  /* INSIGHTS */
+
+  renderInsights(
+    analysis,
+    student
+  );
+
+
+  /* SHOW RESULT */
+
+  loginSection.style.display =
+    "none";
+
+  resultSection.style.display =
+    "block";
+
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+
+}
+
+
+/* ============================================================
+   SUBJECTS
+   ============================================================ */
+
+function renderSubjects(subjects) {
+
+  const container =
+    document.getElementById(
+      "subjects"
+    );
+
+
+  container.innerHTML = "";
+
+
+  if (
+    !Array.isArray(subjects) ||
+    subjects.length === 0
+  ) {
+
+    container.innerHTML =
+      '<div class="recommendation">' +
+      'No subject information available.' +
+      '</div>';
+
+    return;
+  }
+
+
+  subjects.forEach(
+    function(item) {
+
+      const subject =
+        item.subject ||
+        item.name ||
+        "Subject";
+
+
+      const marks =
         Number(
-          student.cgpa ??
-          analysis.currentCGPA ??
+          item.marks ??
+          item.mark ??
           0
         );
 
 
-      document.getElementById(
-        "cgpa"
-      ).textContent =
-        isNaN(cgpa)
-          ? "0.00"
-          : cgpa.toFixed(2);
+      const row =
+        document.createElement(
+          "div"
+        );
 
 
-      /*
-      SGPA
-      */
+      row.className =
+        "subject";
 
-      const sgpa =
+
+      const name =
+        document.createElement(
+          "div"
+        );
+
+      name.className =
+        "subject-name";
+
+      name.textContent =
+        subject;
+
+
+      const mark =
+        document.createElement(
+          "div"
+        );
+
+      mark.className =
+        "subject-mark";
+
+      mark.textContent =
+        Number.isFinite(marks)
+          ? marks
+          : "--";
+
+
+      row.appendChild(name);
+      row.appendChild(mark);
+
+      container.appendChild(row);
+
+    }
+  );
+
+}
+
+
+/* ============================================================
+   RECOMMENDATIONS
+   ============================================================ */
+
+function renderRecommendations(
+  recommendations
+) {
+
+  const container =
+    document.getElementById(
+      "recommendations"
+    );
+
+
+  container.innerHTML = "";
+
+
+  if (
+    !Array.isArray(recommendations) ||
+    recommendations.length === 0
+  ) {
+
+    container.innerHTML =
+      '<div class="recommendation">' +
+      'Continue maintaining consistent academic performance.' +
+      '</div>';
+
+    return;
+  }
+
+
+  recommendations.forEach(
+    function(item) {
+
+      const div =
+        document.createElement(
+          "div"
+        );
+
+
+      div.className =
+        "recommendation";
+
+
+      div.textContent =
+        item;
+
+
+      container.appendChild(
+        div
+      );
+
+    }
+  );
+
+}
+
+
+/* ============================================================
+   INSIGHTS
+   ============================================================ */
+
+function renderInsights(
+  analysis,
+  student
+) {
+
+  const container =
+    document.getElementById(
+      "insights"
+    );
+
+
+  container.innerHTML = "";
+
+
+  const subjects =
+    student.subjects ||
+    analysis.subjects ||
+    [];
+
+
+  if (
+    !Array.isArray(subjects) ||
+    subjects.length === 0
+  ) {
+
+    const div =
+      document.createElement(
+        "div"
+      );
+
+    div.className =
+      "recommendation";
+
+    div.textContent =
+      analysis.overallTrend ||
+      "Current semester performance";
+
+    container.appendChild(div);
+
+    return;
+  }
+
+
+  let highest = null;
+  let lowest = null;
+
+
+  subjects.forEach(
+    function(item) {
+
+      const marks =
         Number(
-          student.sgpa ??
-          analysis.sgpa ??
+          item.marks ??
+          item.mark ??
           0
         );
 
 
-      document.getElementById(
-        "sgpa"
-      ).textContent =
-        isNaN(sgpa)
-          ? "0.00"
-          : sgpa.toFixed(2);
-
-
-      /*
-      Semester
-      */
-
-      document.getElementById(
-        "semester"
-      ).textContent =
-        student.semester ||
-        "--";
-
-
-      /*
-      CGPA change
-      */
-
-      const change =
-        Number(
-          analysis.cgpaChange || 0
-        );
-
-
-      document.getElementById(
-        "cgpaChange"
-      ).textContent =
-        change > 0
-          ? "+" + change.toFixed(2)
-          : change.toFixed(2);
-
-
-      /*
-      Overall trend
-      */
-
-      document.getElementById(
-        "trend"
-      ).textContent =
-        analysis.overallTrend ||
-        "Current semester performance";
-
-
-      /*
-      Subjects
-      */
-
-      renderSubjects(
-        student.subjects ||
-        analysis.subjects ||
-        []
-      );
-
-
-      /*
-      Recommendations
-      */
-
-      renderRecommendations(
-        analysis.recommendations ||
-        []
-      );
-
-
-      /*
-      Insights
-      */
-
-      renderInsights(
-        analysis,
-        student
-      );
-
-
-      /*
-      Switch screen
-      */
-
-      loginSection.style.display =
-        "none";
-
-      resultSection.style.display =
-        "block";
-
-
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
-
-    }
-
-
-    /* ========================================================
-       SUBJECTS
-       ======================================================== */
-
-    function renderSubjects(subjects) {
-
-      const container =
-        document.getElementById(
-          "subjects"
-        );
-
-
-      container.innerHTML = "";
-
-
       if (
-        !Array.isArray(subjects) ||
-        subjects.length === 0
+        !Number.isFinite(marks)
       ) {
-
-        container.innerHTML =
-          '<div class="recommendation">' +
-          'No subject information available.' +
-          '</div>';
-
         return;
-
       }
 
 
-      subjects.forEach(
-        function(item) {
-
-          const subject =
-            item.subject ||
-            item.name ||
-            "Subject";
-
-
-          const marks =
-            Number(
-              item.marks ??
-              item.mark ??
-              0
-            );
-
-
-          const row =
-            document.createElement(
-              "div"
-            );
-
-          row.className =
-            "subject";
-
-
-          row.innerHTML =
-
-            '<div class="subject-name">' +
-              escapeHTML(subject) +
-            '</div>' +
-
-            '<div class="subject-mark">' +
-              (
-                isNaN(marks)
-                  ? "--"
-                  : marks
-              ) +
-            '</div>';
-
-
-          container.appendChild(row);
-
-        }
-      );
-
-    }
-
-
-    /* ========================================================
-       RECOMMENDATIONS
-       ======================================================== */
-
-    function renderRecommendations(
-      recommendations
-    ) {
-
-      const container =
-        document.getElementById(
-          "recommendations"
-        );
-
-
-      container.innerHTML = "";
+      const name =
+        item.subject ||
+        item.name ||
+        "Subject";
 
 
       if (
-        !Array.isArray(
-          recommendations
-        ) ||
-        recommendations.length === 0
+        !highest ||
+        marks > highest.marks
       ) {
 
-        container.innerHTML =
-          '<div class="recommendation">' +
-          'Continue maintaining consistent academic performance.' +
-          '</div>';
-
-        return;
-
-      }
-
-
-      recommendations.forEach(
-        function(item) {
-
-          const div =
-            document.createElement(
-              "div"
-            );
-
-          div.className =
-            "recommendation";
-
-          div.textContent =
-            item;
-
-          container.appendChild(div);
-
-        }
-      );
-
-    }
-
-
-    /* ========================================================
-       INSIGHTS
-       ======================================================== */
-
-    function renderInsights(
-      analysis,
-      student
-    ) {
-
-      const container =
-        document.getElementById(
-          "insights"
-        );
-
-
-      container.innerHTML = "";
-
-
-      const subjects =
-        student.subjects ||
-        analysis.subjects ||
-        [];
-
-
-      if (
-        subjects.length === 0
-      ) {
-
-        container.innerHTML =
-          '<div class="recommendation">' +
-          (
-            analysis.overallTrend ||
-            "Current semester performance"
-          ) +
-          '</div>';
-
-        return;
-
-      }
-
-
-      let highest = null;
-
-      let lowest = null;
-
-
-      subjects.forEach(
-        function(item) {
-
-          const marks =
-            Number(
-              item.marks ??
-              item.mark ??
-              0
-            );
-
-
-          if (
-            !isNaN(marks)
-          ) {
-
-            if (
-              !highest ||
-              marks > highest.marks
-            ) {
-
-              highest = {
-                name:
-                  item.subject ||
-                  item.name ||
-                  "Subject",
-
-                marks:
-                  marks
-              };
-
-            }
-
-
-            if (
-              !lowest ||
-              marks < lowest.marks
-            ) {
-
-              lowest = {
-                name:
-                  item.subject ||
-                  item.name ||
-                  "Subject",
-
-                marks:
-                  marks
-              };
-
-            }
-
-          }
-
-        }
-      );
-
-
-      if (highest) {
-
-        const div =
-          document.createElement(
-            "div"
-          );
-
-        div.className =
-          "recommendation";
-
-        div.textContent =
-          "Strongest subject: " +
-          highest.name +
-          " (" +
-          highest.marks +
-          ")";
-
-        container.appendChild(div);
-
-      }
-
-
-      if (lowest) {
-
-        const div =
-          document.createElement(
-            "div"
-          );
-
-        div.className =
-          "recommendation";
-
-        div.textContent =
-          "Subject needing more attention: " +
-          lowest.name +
-          " (" +
-          lowest.marks +
-          ")";
-
-        container.appendChild(div);
+        highest = {
+          name: name,
+          marks: marks
+        };
 
       }
 
 
       if (
-        analysis.overallTrend
+        !lowest ||
+        marks < lowest.marks
       ) {
 
-        const div =
-          document.createElement(
-            "div"
-          );
-
-        div.className =
-          "recommendation";
-
-        div.textContent =
-          analysis.overallTrend;
-
-        container.appendChild(div);
+        lowest = {
+          name: name,
+          marks: marks
+        };
 
       }
 
     }
+  );
 
 
-    /* ========================================================
-       LOADING
-       ======================================================== */
+  if (highest) {
 
-    function setLoading(
-      state
-    ) {
+    addInsight(
+      container,
+      "Strongest subject: " +
+      highest.name +
+      " (" +
+      highest.marks +
+      ")"
+    );
 
-      loading.style.display =
-        state
-          ? "flex"
-          : "none";
-
-
-      submitBtn.disabled =
-        state;
+  }
 
 
-      submitBtn.textContent =
-        state
-          ? "Verifying..."
-          : "View My Result";
+  if (lowest) {
 
-    }
+    addInsight(
+      container,
+      "Subject needing more attention: " +
+      lowest.name +
+      " (" +
+      lowest.marks +
+      ")"
+    );
 
-
-    /* ========================================================
-       MESSAGE
-       ======================================================== */
-
-    function showMessage(
-      text,
-      type
-    ) {
-
-      message.textContent =
-        text;
-
-      message.className =
-        "message " +
-        type;
-
-    }
+  }
 
 
-    function clearMessage() {
+  if (analysis.overallTrend) {
 
-      message.textContent =
-        "";
+    addInsight(
+      container,
+      analysis.overallTrend
+    );
 
-      message.className =
-        "message";
+  }
 
-    }
-
-
-    /* ========================================================
-       LOGOUT / BACK
-       ======================================================== */
-
-    function logout() {
-
-      resultSection.style.display =
-        "none";
-
-      loginSection.style.display =
-        "block";
-
-      form.reset();
-
-      clearMessage();
-
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
-
-    }
+}
 
 
-    /* ========================================================
-       HTML ESCAPE
-       ======================================================== */
+/* ============================================================
+   ADD INSIGHT
+   ============================================================ */
 
-    function escapeHTML(
-      value
-    ) {
+function addInsight(
+  container,
+  text
+) {
 
-      return String(value)
-        .replace(
-          /&/g,
-          "&amp;"
-        )
-        .replace(
-          /</g,
-          "&lt;"
-        )
-        .replace(
-          />/g,
-          "&gt;"
-        )
-        .replace(
-          /"/g,
-          "&quot;"
-        )
-        .replace(
-          /'/g,
-          "&#039;"
-        );
+  const div =
+    document.createElement(
+      "div"
+    );
 
-    }
+  div.className =
+    "recommendation";
 
-  </script>
+  div.textContent =
+    text;
+
+  container.appendChild(
+    div
+  );
+
+}
+
+
+/* ============================================================
+   LOADING
+   ============================================================ */
+
+function setLoading(state) {
+
+  loading.style.display =
+    state
+      ? "flex"
+      : "none";
+
+
+  submitBtn.disabled =
+    state;
+
+
+  submitBtn.textContent =
+    state
+      ? "Verifying..."
+      : "View My Result";
+
+}
+
+
+/* ============================================================
+   MESSAGE
+   ============================================================ */
+
+function showMessage(
+  text,
+  type
+) {
+
+  message.textContent =
+    text;
+
+
+  message.className =
+    "message " +
+    type;
+
+}
+
+
+function clearMessage() {
+
+  message.textContent =
+    "";
+
+  message.className =
+    "message";
+
+}
+
+
+/* ============================================================
+   BACK BUTTON
+   ============================================================ */
+
+function logout() {
+
+  resultSection.style.display =
+    "none";
+
+  loginSection.style.display =
+    "block";
+
+
+  form.reset();
+
+  clearMessage();
+
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+
+}
+
+</script>
 
 </body>
 </html>
