@@ -1784,25 +1784,41 @@ form.addEventListener(
       "Verifying...";
 
 
-    try {
-      
+try {
 
-const url =
-  API_URL +
-  "?registrationNumber=" +
-  encodeURIComponent(regNo) +
-  "&dob=" +
-  encodeURIComponent(dob);
+  const url =
+    API_URL +
+    "?registrationNumber=" +
+    encodeURIComponent(regNo) +
+    "&dob=" +
+    encodeURIComponent(dob);
 
-const response = await fetch(url);
+  console.log("Calling:", url);
 
-if (!response.ok) {
-  throw new Error("Server error: " + response.status);
+  const response = await fetch(url);
+
+  console.log("Response status:", response.status);
+
+  if (!response.ok) {
+    throw new Error(
+      "Server error: " + response.status
+    );
+  }
+
+  const data = await response.json();
+
+  console.log("Student data:", data);
+
+  if (!data.success) {
+    throw new Error(
+      data.message || "Verification failed"
+    );
+  }
+if (!data.success) {
+  throw new Error(
+    data.message || "Verification failed"
+  );
 }
-
-const data = await response.json();
-const data = await response.json();
-
 if (!data.success) {
   throw new Error(
     data.message || "Verification failed"
