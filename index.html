@@ -1787,16 +1787,20 @@ form.addEventListener(
     try {
       
 
-const response = await fetch(API_URL, {
-  method: "POST",
-  headers: {
-    "Content-Type": "text/plain;charset=utf-8"
-  },
-  body: JSON.stringify({
-    registrationNumber: regNo,
-    dob: dob
-  })
-});
+const url =
+  API_URL +
+  "?registrationNumber=" +
+  encodeURIComponent(regNo) +
+  "&dob=" +
+  encodeURIComponent(dob);
+
+const response = await fetch(url);
+
+if (!response.ok) {
+  throw new Error("Server error: " + response.status);
+}
+
+const data = await response.json();
 const data = await response.json();
 
 if (!data.success) {
